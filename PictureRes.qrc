@@ -1,0 +1,38 @@
+<RCC>
+    <qresource prefix="/icon">
+        <file>icon/ufoW.png</file>
+        <file>icon/searchB.png</file>
+        <file>icon/searchW.png</file>
+        <file>icon/ufoB.png</file>
+        <file>icon/close.png</file>
+        <file>icon/closeB.png</file>
+        <file>icon/maxB.png</file>
+        <file>icon/maxW.png</file>
+        <file>icon/minB.png</file>
+        <file>icon/minW.png</file>
+        <file>icon/penB.png</file>
+        <file>icon/penW.png</file>
+        <file>icon/windowedB.png</file>
+        <file>icon/windowedW.png</file>
+        <file>icon/Curves.png</file>
+        <file>icon/CurvesB.png</file>
+        <file>icon/Hi.png</file>
+        <file>icon/HiB.png</file>
+        <file>icon/ID.png</file>
+        <file>icon/IDB.png</file>
+        <file>icon/network.png</file>
+        <file>icon/networkB.png</file>
+        <file>icon/tool.png</file>
+        <file>icon/toolB.png</file>
+        <file>icon/com.png</file>
+        <file>icon/comB.png</file>
+    </qresource>
+    <qresource prefix="/picture">
+        <file>picture/building.png</file>
+        <file>picture/eledata.png</file>
+        <file>picture/happynewyear.png</file>
+        <file>picture/chilun.jpg</file>
+        <file>picture/shiboqi.jpg</file>
+        <file>picture/welcome.jpg</file>
+    </qresource>
+</RCC>

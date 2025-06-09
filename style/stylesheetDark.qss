@@ -1,0 +1,58 @@
+
+
+QWidget#TitleWidget
+{
+    background-color: #38393C;
+}
+QLabel#IconLabel{
+    color: white;
+}
+QLineEdit#SearchEdit{
+    border-radius: 5px;
+}
+QWidget#leftMenu{
+    background-color: #55585D;
+}
+QWidget#MainWidget{
+    background-color: #FFFFFF;
+}
+QWidget#rightMenu{
+    background-color: #55585D;
+    color: white;
+}
+QPushButton#CloseBtn, QPushButton#MaxBtn, QPushButton#MinBtn, QPushButton#QssBtn, QPushButton#IconBtn{
+    background-color: #38393C;
+    color: white;
+    border: 0px;
+    border-radius: 0px;
+}
+ QPushButton#SearchBtn{
+    background-color: #38393C;
+    border-radius: 5px;
+}
+QPushButton#CloseBtn:hover,QPushButton#MaxBtn:hover,QPushButton#MinBtn:hover,QPushButton#QssBtn:hover,QPushButton#SearchBtn:hover{
+    background-color: #4C4D50; /* 悬浮时变亮 */
+}
+
+QToolButton#networkBtn ,QToolButton#plotBtn, QToolButton#startBtn ,QToolButton#idBtn ,QToolButton#toolBtn,QToolButton#modbusBtn{
+     background-color: #55585D;
+     color: white;
+     border: 0px;
+     padding-top: 5px;   /* 增加顶部间距 */
+     padding-bottom: 5px; /* 增加底部间距 */
+
+}
+QToolButton#networkBtn:hover ,QToolButton#plotBtn:hover, QToolButton#startBtn:hover ,QToolButton#idBtn:hover ,QToolButton#toolBtn:hover,QToolButton#modbusBtn:hover{
+    background-color:#9B9B9E;
+}
+
+QToolButton#networkBtn:checked ,QToolButton#plotBtn:checked, QToolButton#startBtn:checked,QToolButton#modbusBtn:checked{
+    border-left:3px solid  white;
+    background-color: #212222;
+}
+QToolButton#idBtn:pressed ,QToolButton#toolBtn:pressed{
+    background-color: #212222;
+}
+QSplitter#splitter::handle {
+
+}
