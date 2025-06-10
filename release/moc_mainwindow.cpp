@@ -51,11 +51,13 @@ static constexpr auto qt_meta_stringdata_CLASSMainWindowENDCLASS = QtMocHelpers:
     "on_toolBtn_clicked",
     "on_idBtn_clicked",
     "on_comConnect_clicked",
-    "on_comDisconnect_clicked"
+    "on_comDisconnect_clicked",
+    "on_addTaskBtn_clicked",
+    "on_deleteBtn_clicked"
 );
 #else  // !QT_MOC_HAS_STRING_DATA
 struct qt_meta_stringdata_CLASSMainWindowENDCLASS_t {
-    uint offsetsAndSizes[24];
+    uint offsetsAndSizes[28];
     char stringdata0[11];
     char stringdata1[14];
     char stringdata2[1];
@@ -68,6 +70,8 @@ struct qt_meta_stringdata_CLASSMainWindowENDCLASS_t {
     char stringdata9[17];
     char stringdata10[22];
     char stringdata11[25];
+    char stringdata12[22];
+    char stringdata13[21];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_CLASSMainWindowENDCLASS_t::offsetsAndSizes) + ofs), len 
@@ -84,7 +88,9 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSMainWindowENDCLASS_t qt_meta_st
         QT_MOC_LITERAL(108, 18),  // "on_toolBtn_clicked"
         QT_MOC_LITERAL(127, 16),  // "on_idBtn_clicked"
         QT_MOC_LITERAL(144, 21),  // "on_comConnect_clicked"
-        QT_MOC_LITERAL(166, 24)   // "on_comDisconnect_clicked"
+        QT_MOC_LITERAL(166, 24),  // "on_comDisconnect_clicked"
+        QT_MOC_LITERAL(191, 21),  // "on_addTaskBtn_clicked"
+        QT_MOC_LITERAL(213, 20)   // "on_deleteBtn_clicked"
     },
     "MainWindow",
     "modbusConnect",
@@ -97,7 +103,9 @@ Q_CONSTINIT static const qt_meta_stringdata_CLASSMainWindowENDCLASS_t qt_meta_st
     "on_toolBtn_clicked",
     "on_idBtn_clicked",
     "on_comConnect_clicked",
-    "on_comDisconnect_clicked"
+    "on_comDisconnect_clicked",
+    "on_addTaskBtn_clicked",
+    "on_deleteBtn_clicked"
 };
 #undef QT_MOC_LITERAL
 #endif // !QT_MOC_HAS_STRING_DATA
@@ -109,7 +117,7 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
       11,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -117,23 +125,27 @@ Q_CONSTINIT static const uint qt_meta_data_CLASSMainWindowENDCLASS[] = {
        2,       // signalCount
 
  // signals: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    1,   68,    2, 0x06,    1 /* Public */,
-       4,    0,   71,    2, 0x06,    3 /* Public */,
+       1,    1,   80,    2, 0x06,    1 /* Public */,
+       4,    0,   83,    2, 0x06,    3 /* Public */,
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       5,    0,   72,    2, 0x08,    4 /* Private */,
-       6,    0,   73,    2, 0x08,    5 /* Private */,
-       7,    0,   74,    2, 0x08,    6 /* Private */,
-       8,    0,   75,    2, 0x08,    7 /* Private */,
-       9,    0,   76,    2, 0x08,    8 /* Private */,
-      10,    0,   77,    2, 0x08,    9 /* Private */,
-      11,    0,   78,    2, 0x08,   10 /* Private */,
+       5,    0,   84,    2, 0x08,    4 /* Private */,
+       6,    0,   85,    2, 0x08,    5 /* Private */,
+       7,    0,   86,    2, 0x08,    6 /* Private */,
+       8,    0,   87,    2, 0x08,    7 /* Private */,
+       9,    0,   88,    2, 0x08,    8 /* Private */,
+      10,    0,   89,    2, 0x08,    9 /* Private */,
+      11,    0,   90,    2, 0x08,   10 /* Private */,
+      12,    0,   91,    2, 0x08,   11 /* Private */,
+      13,    0,   92,    2, 0x08,   12 /* Private */,
 
  // signals: parameters
     QMetaType::Int, QMetaType::QVariantMap,    3,
     QMetaType::Int,
 
  // slots: parameters
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -172,6 +184,10 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         // method 'on_comConnect_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'on_comDisconnect_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_addTaskBtn_clicked'
+        QtPrivate::TypeAndForceComplete<void, std::false_type>,
+        // method 'on_deleteBtn_clicked'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -194,6 +210,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 6: _t->on_idBtn_clicked(); break;
         case 7: _t->on_comConnect_clicked(); break;
         case 8: _t->on_comDisconnect_clicked(); break;
+        case 9: _t->on_addTaskBtn_clicked(); break;
+        case 10: _t->on_deleteBtn_clicked(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
@@ -234,13 +252,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 11;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 9)
+        if (_id < 11)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 9;
+        _id -= 11;
     }
     return _id;
 }

@@ -57,6 +57,10 @@ private slots:
     void on_comConnect_clicked();
     void on_comDisconnect_clicked();
 
+    void on_addTaskBtn_clicked();
+
+    void on_deleteBtn_clicked();
+
 signals:
     modbusConnect( QMap<QString,QVariant> settings);
     modbusDisconnect();

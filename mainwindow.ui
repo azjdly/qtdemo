@@ -257,7 +257,7 @@
     </item>
     <item>
      <widget class="QWidget" name="MainWidget" native="true">
-      <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,15">
+      <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,10">
        <property name="spacing">
         <number>0</number>
        </property>
@@ -321,8 +321,8 @@
              <property name="spacing">
               <number>0</number>
              </property>
-             <item row="3" column="0">
-              <widget class="QToolButton" name="networkBtn">
+             <item row="4" column="0">
+              <widget class="QToolButton" name="modbusBtn">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -330,17 +330,14 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>网络</string>
+                <string>串口</string>
                </property>
                <property name="icon">
                 <iconset resource="PictureRes.qrc">
-                 <normaloff>:/icon/icon/network.png</normaloff>:/icon/icon/network.png</iconset>
+                 <normaloff>:/icon/icon/com.png</normaloff>:/icon/icon/com.png</iconset>
                </property>
                <property name="checkable">
                 <bool>true</bool>
-               </property>
-               <property name="checked">
-                <bool>false</bool>
                </property>
                <property name="autoExclusive">
                 <bool>true</bool>
@@ -408,8 +405,8 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="0">
-              <widget class="QToolButton" name="modbusBtn">
+             <item row="3" column="0">
+              <widget class="QToolButton" name="networkBtn">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                  <horstretch>0</horstretch>
@@ -417,14 +414,17 @@
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>串口</string>
+                <string>网络</string>
                </property>
                <property name="icon">
                 <iconset resource="PictureRes.qrc">
-                 <normaloff>:/icon/icon/com.png</normaloff>:/icon/icon/com.png</iconset>
+                 <normaloff>:/icon/icon/network.png</normaloff>:/icon/icon/network.png</iconset>
                </property>
                <property name="checkable">
                 <bool>true</bool>
+               </property>
+               <property name="checked">
+                <bool>false</bool>
                </property>
                <property name="autoExclusive">
                 <bool>true</bool>
@@ -835,6 +835,19 @@
                    <widget class="QWidget" name="widget_6" native="true">
                     <layout class="QVBoxLayout" name="verticalLayout_3">
                      <item>
+                      <spacer name="verticalSpacer_2">
+                       <property name="orientation">
+                        <enum>Qt::Vertical</enum>
+                       </property>
+                       <property name="sizeHint" stdset="0">
+                        <size>
+                         <width>20</width>
+                         <height>40</height>
+                        </size>
+                       </property>
+                      </spacer>
+                     </item>
+                     <item>
                       <widget class="QPushButton" name="comConnect">
                        <property name="text">
                         <string>开始连接</string>
@@ -856,11 +869,18 @@
                </item>
                <item>
                 <widget class="QWidget" name="widget_5" native="true">
-                 <layout class="QVBoxLayout" name="verticalLayout_6" stretch="3,2">
+                 <layout class="QVBoxLayout" name="verticalLayout_6" stretch="5,2">
                   <item>
                    <widget class="QWidget" name="widget_8" native="true">
-                    <layout class="QGridLayout" name="gridLayout_10">
-                     <item row="0" column="0">
+                    <layout class="QVBoxLayout" name="verticalLayout_7">
+                     <item>
+                      <widget class="QLabel" name="label">
+                       <property name="text">
+                        <string>输出信息</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
                       <widget class="QTextEdit" name="textEdit"/>
                      </item>
                     </layout>
@@ -868,7 +888,166 @@
                   </item>
                   <item>
                    <widget class="QWidget" name="widget_9" native="true">
-                    <layout class="QGridLayout" name="gridLayout_11"/>
+                    <layout class="QVBoxLayout" name="verticalLayout_8" stretch="1,2,8">
+                     <item>
+                      <widget class="QLabel" name="label_2">
+                       <property name="text">
+                        <string>modbus RTU配置</string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_2" native="true">
+                       <layout class="QGridLayout" name="gridLayout_6">
+                        <item row="1" column="2">
+                         <widget class="QSpinBox" name="startAddress"/>
+                        </item>
+                        <item row="0" column="2">
+                         <widget class="QLabel" name="label_8">
+                          <property name="text">
+                           <string>开始地址</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="3">
+                         <widget class="QLabel" name="label_9">
+                          <property name="text">
+                           <string>数量</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="0">
+                         <widget class="QLabel" name="label_6">
+                          <property name="text">
+                           <string>从机地址</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="1" column="0">
+                         <widget class="QSpinBox" name="slaveAddress">
+                          <property name="minimum">
+                           <number>1</number>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="1" column="3">
+                         <widget class="QSpinBox" name="coils">
+                          <property name="minimum">
+                           <number>1</number>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="0" column="1">
+                         <widget class="QLabel" name="label_7">
+                          <property name="text">
+                           <string>功能码</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item row="1" column="1">
+                         <widget class="QComboBox" name="functionCode">
+                          <item>
+                           <property name="text">
+                            <string>0x01</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>0x02</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>0x03</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>0x04</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>0x05</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>0x06</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>0x0f</string>
+                           </property>
+                          </item>
+                          <item>
+                           <property name="text">
+                            <string>0x10</string>
+                           </property>
+                          </item>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QWidget" name="widget_3" native="true">
+                       <layout class="QHBoxLayout" name="horizontalLayout_7">
+                        <item>
+                         <widget class="QComboBox" name="comboBox_2"/>
+                        </item>
+                        <item>
+                         <widget class="QPushButton" name="addTaskBtn">
+                          <property name="text">
+                           <string>添加读取任务</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QPushButton" name="deleteTaskBtn">
+                          <property name="text">
+                           <string>删除读取任务</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <spacer name="horizontalSpacer_2">
+                          <property name="orientation">
+                           <enum>Qt::Horizontal</enum>
+                          </property>
+                          <property name="sizeHint" stdset="0">
+                           <size>
+                            <width>40</width>
+                            <height>20</height>
+                           </size>
+                          </property>
+                         </spacer>
+                        </item>
+                        <item>
+                         <widget class="QLineEdit" name="sendCycle">
+                          <property name="sizePolicy">
+                           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                           </sizepolicy>
+                          </property>
+                          <property name="placeholderText">
+                           <string>读取周期</string>
+                          </property>
+                         </widget>
+                        </item>
+                        <item>
+                         <widget class="QCheckBox" name="cycleCheck">
+                          <property name="text">
+                           <string>定时读取</string>
+                          </property>
+                         </widget>
+                        </item>
+                       </layout>
+                      </widget>
+                     </item>
+                    </layout>
                    </widget>
                   </item>
                  </layout>

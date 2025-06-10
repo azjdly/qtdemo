@@ -12,15 +12,18 @@
 #include <QtCore/QVariant>
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
+#include <QtWidgets/QSpinBox>
 #include <QtWidgets/QSplitter>
 #include <QtWidgets/QStackedWidget>
 #include <QtWidgets/QTextEdit>
@@ -58,10 +61,10 @@ public:
     QVBoxLayout *verticalLayout_4;
     QFrame *menuFrame;
     QGridLayout *gridLayout;
-    QToolButton *networkBtn;
+    QToolButton *modbusBtn;
     QToolButton *plotBtn;
     QToolButton *startBtn;
-    QToolButton *modbusBtn;
+    QToolButton *networkBtn;
     QSpacerItem *verticalSpacer;
     QFrame *toolFrame;
     QGridLayout *gridLayout_2;
@@ -103,15 +106,36 @@ public:
     QComboBox *flowcontrolBox;
     QWidget *widget_6;
     QVBoxLayout *verticalLayout_3;
+    QSpacerItem *verticalSpacer_2;
     QPushButton *comConnect;
     QPushButton *comDisconnect;
     QWidget *widget_5;
     QVBoxLayout *verticalLayout_6;
     QWidget *widget_8;
-    QGridLayout *gridLayout_10;
+    QVBoxLayout *verticalLayout_7;
+    QLabel *label;
     QTextEdit *textEdit;
     QWidget *widget_9;
-    QGridLayout *gridLayout_11;
+    QVBoxLayout *verticalLayout_8;
+    QLabel *label_2;
+    QWidget *widget_2;
+    QGridLayout *gridLayout_6;
+    QSpinBox *startAddress;
+    QLabel *label_8;
+    QLabel *label_9;
+    QLabel *label_6;
+    QSpinBox *slaveAddress;
+    QSpinBox *coils;
+    QLabel *label_7;
+    QComboBox *functionCode;
+    QWidget *widget_3;
+    QHBoxLayout *horizontalLayout_7;
+    QComboBox *comboBox_2;
+    QPushButton *addTaskBtn;
+    QPushButton *deleteTaskBtn;
+    QSpacerItem *horizontalSpacer_2;
+    QLineEdit *sendCycle;
+    QCheckBox *cycleCheck;
     QWidget *rightMenu;
     QGridLayout *gridLayout_4;
     QStackedWidget *rightStack;
@@ -270,22 +294,21 @@ public:
         gridLayout->setSpacing(0);
         gridLayout->setObjectName("gridLayout");
         gridLayout->setContentsMargins(0, 0, 0, 0);
-        networkBtn = new QToolButton(menuFrame);
-        networkBtn->setObjectName("networkBtn");
+        modbusBtn = new QToolButton(menuFrame);
+        modbusBtn->setObjectName("modbusBtn");
         QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Expanding);
         sizePolicy2.setHorizontalStretch(0);
         sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(networkBtn->sizePolicy().hasHeightForWidth());
-        networkBtn->setSizePolicy(sizePolicy2);
+        sizePolicy2.setHeightForWidth(modbusBtn->sizePolicy().hasHeightForWidth());
+        modbusBtn->setSizePolicy(sizePolicy2);
         QIcon icon5;
-        icon5.addFile(QString::fromUtf8(":/icon/icon/network.png"), QSize(), QIcon::Normal, QIcon::Off);
-        networkBtn->setIcon(icon5);
-        networkBtn->setCheckable(true);
-        networkBtn->setChecked(false);
-        networkBtn->setAutoExclusive(true);
-        networkBtn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+        icon5.addFile(QString::fromUtf8(":/icon/icon/com.png"), QSize(), QIcon::Normal, QIcon::Off);
+        modbusBtn->setIcon(icon5);
+        modbusBtn->setCheckable(true);
+        modbusBtn->setAutoExclusive(true);
+        modbusBtn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-        gridLayout->addWidget(networkBtn, 3, 0, 1, 1);
+        gridLayout->addWidget(modbusBtn, 4, 0, 1, 1);
 
         plotBtn = new QToolButton(menuFrame);
         plotBtn->setObjectName("plotBtn");
@@ -315,18 +338,19 @@ public:
 
         gridLayout->addWidget(startBtn, 0, 0, 1, 1);
 
-        modbusBtn = new QToolButton(menuFrame);
-        modbusBtn->setObjectName("modbusBtn");
-        sizePolicy2.setHeightForWidth(modbusBtn->sizePolicy().hasHeightForWidth());
-        modbusBtn->setSizePolicy(sizePolicy2);
+        networkBtn = new QToolButton(menuFrame);
+        networkBtn->setObjectName("networkBtn");
+        sizePolicy2.setHeightForWidth(networkBtn->sizePolicy().hasHeightForWidth());
+        networkBtn->setSizePolicy(sizePolicy2);
         QIcon icon8;
-        icon8.addFile(QString::fromUtf8(":/icon/icon/com.png"), QSize(), QIcon::Normal, QIcon::Off);
-        modbusBtn->setIcon(icon8);
-        modbusBtn->setCheckable(true);
-        modbusBtn->setAutoExclusive(true);
-        modbusBtn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
+        icon8.addFile(QString::fromUtf8(":/icon/icon/network.png"), QSize(), QIcon::Normal, QIcon::Off);
+        networkBtn->setIcon(icon8);
+        networkBtn->setCheckable(true);
+        networkBtn->setChecked(false);
+        networkBtn->setAutoExclusive(true);
+        networkBtn->setToolButtonStyle(Qt::ToolButtonTextUnderIcon);
 
-        gridLayout->addWidget(modbusBtn, 4, 0, 1, 1);
+        gridLayout->addWidget(networkBtn, 3, 0, 1, 1);
 
 
         verticalLayout_4->addWidget(menuFrame);
@@ -537,6 +561,10 @@ public:
         widget_6->setObjectName("widget_6");
         verticalLayout_3 = new QVBoxLayout(widget_6);
         verticalLayout_3->setObjectName("verticalLayout_3");
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout_3->addItem(verticalSpacer_2);
+
         comConnect = new QPushButton(widget_6);
         comConnect->setObjectName("comConnect");
 
@@ -562,24 +590,135 @@ public:
         verticalLayout_6->setObjectName("verticalLayout_6");
         widget_8 = new QWidget(widget_5);
         widget_8->setObjectName("widget_8");
-        gridLayout_10 = new QGridLayout(widget_8);
-        gridLayout_10->setObjectName("gridLayout_10");
+        verticalLayout_7 = new QVBoxLayout(widget_8);
+        verticalLayout_7->setObjectName("verticalLayout_7");
+        label = new QLabel(widget_8);
+        label->setObjectName("label");
+
+        verticalLayout_7->addWidget(label);
+
         textEdit = new QTextEdit(widget_8);
         textEdit->setObjectName("textEdit");
 
-        gridLayout_10->addWidget(textEdit, 0, 0, 1, 1);
+        verticalLayout_7->addWidget(textEdit);
 
 
         verticalLayout_6->addWidget(widget_8);
 
         widget_9 = new QWidget(widget_5);
         widget_9->setObjectName("widget_9");
-        gridLayout_11 = new QGridLayout(widget_9);
-        gridLayout_11->setObjectName("gridLayout_11");
+        verticalLayout_8 = new QVBoxLayout(widget_9);
+        verticalLayout_8->setObjectName("verticalLayout_8");
+        label_2 = new QLabel(widget_9);
+        label_2->setObjectName("label_2");
+
+        verticalLayout_8->addWidget(label_2);
+
+        widget_2 = new QWidget(widget_9);
+        widget_2->setObjectName("widget_2");
+        gridLayout_6 = new QGridLayout(widget_2);
+        gridLayout_6->setObjectName("gridLayout_6");
+        startAddress = new QSpinBox(widget_2);
+        startAddress->setObjectName("startAddress");
+
+        gridLayout_6->addWidget(startAddress, 1, 2, 1, 1);
+
+        label_8 = new QLabel(widget_2);
+        label_8->setObjectName("label_8");
+
+        gridLayout_6->addWidget(label_8, 0, 2, 1, 1);
+
+        label_9 = new QLabel(widget_2);
+        label_9->setObjectName("label_9");
+
+        gridLayout_6->addWidget(label_9, 0, 3, 1, 1);
+
+        label_6 = new QLabel(widget_2);
+        label_6->setObjectName("label_6");
+
+        gridLayout_6->addWidget(label_6, 0, 0, 1, 1);
+
+        slaveAddress = new QSpinBox(widget_2);
+        slaveAddress->setObjectName("slaveAddress");
+        slaveAddress->setMinimum(1);
+
+        gridLayout_6->addWidget(slaveAddress, 1, 0, 1, 1);
+
+        coils = new QSpinBox(widget_2);
+        coils->setObjectName("coils");
+        coils->setMinimum(1);
+
+        gridLayout_6->addWidget(coils, 1, 3, 1, 1);
+
+        label_7 = new QLabel(widget_2);
+        label_7->setObjectName("label_7");
+
+        gridLayout_6->addWidget(label_7, 0, 1, 1, 1);
+
+        functionCode = new QComboBox(widget_2);
+        functionCode->addItem(QString());
+        functionCode->addItem(QString());
+        functionCode->addItem(QString());
+        functionCode->addItem(QString());
+        functionCode->addItem(QString());
+        functionCode->addItem(QString());
+        functionCode->addItem(QString());
+        functionCode->addItem(QString());
+        functionCode->setObjectName("functionCode");
+
+        gridLayout_6->addWidget(functionCode, 1, 1, 1, 1);
+
+
+        verticalLayout_8->addWidget(widget_2);
+
+        widget_3 = new QWidget(widget_9);
+        widget_3->setObjectName("widget_3");
+        horizontalLayout_7 = new QHBoxLayout(widget_3);
+        horizontalLayout_7->setObjectName("horizontalLayout_7");
+        comboBox_2 = new QComboBox(widget_3);
+        comboBox_2->setObjectName("comboBox_2");
+
+        horizontalLayout_7->addWidget(comboBox_2);
+
+        addTaskBtn = new QPushButton(widget_3);
+        addTaskBtn->setObjectName("addTaskBtn");
+
+        horizontalLayout_7->addWidget(addTaskBtn);
+
+        deleteTaskBtn = new QPushButton(widget_3);
+        deleteTaskBtn->setObjectName("deleteTaskBtn");
+
+        horizontalLayout_7->addWidget(deleteTaskBtn);
+
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_7->addItem(horizontalSpacer_2);
+
+        sendCycle = new QLineEdit(widget_3);
+        sendCycle->setObjectName("sendCycle");
+        QSizePolicy sizePolicy3(QSizePolicy::Preferred, QSizePolicy::Fixed);
+        sizePolicy3.setHorizontalStretch(0);
+        sizePolicy3.setVerticalStretch(0);
+        sizePolicy3.setHeightForWidth(sendCycle->sizePolicy().hasHeightForWidth());
+        sendCycle->setSizePolicy(sizePolicy3);
+
+        horizontalLayout_7->addWidget(sendCycle);
+
+        cycleCheck = new QCheckBox(widget_3);
+        cycleCheck->setObjectName("cycleCheck");
+
+        horizontalLayout_7->addWidget(cycleCheck);
+
+
+        verticalLayout_8->addWidget(widget_3);
+
+        verticalLayout_8->setStretch(0, 1);
+        verticalLayout_8->setStretch(1, 2);
+        verticalLayout_8->setStretch(2, 8);
 
         verticalLayout_6->addWidget(widget_9);
 
-        verticalLayout_6->setStretch(0, 3);
+        verticalLayout_6->setStretch(0, 5);
         verticalLayout_6->setStretch(1, 2);
 
         horizontalLayout_8->addWidget(widget_5);
@@ -642,7 +781,7 @@ public:
         horizontalLayout_5->addWidget(splitter);
 
         horizontalLayout_5->setStretch(0, 1);
-        horizontalLayout_5->setStretch(1, 15);
+        horizontalLayout_5->setStretch(1, 10);
 
         verticalLayout->addWidget(MainWidget);
 
@@ -688,10 +827,10 @@ public:
         MinBtn->setText(QString());
         MaxBtn->setText(QString());
         CloseBtn->setText(QString());
-        networkBtn->setText(QCoreApplication::translate("MainWindow", "\347\275\221\347\273\234", nullptr));
+        modbusBtn->setText(QCoreApplication::translate("MainWindow", "\344\270\262\345\217\243", nullptr));
         plotBtn->setText(QCoreApplication::translate("MainWindow", "\346\233\262\347\272\277\345\233\276", nullptr));
         startBtn->setText(QCoreApplication::translate("MainWindow", "\346\254\242\350\277\216", nullptr));
-        modbusBtn->setText(QCoreApplication::translate("MainWindow", "\344\270\262\345\217\243", nullptr));
+        networkBtn->setText(QCoreApplication::translate("MainWindow", "\347\275\221\347\273\234", nullptr));
         toolBtn->setText(QCoreApplication::translate("MainWindow", "\345\267\245\345\205\267", nullptr));
         idBtn->setText(QCoreApplication::translate("MainWindow", "\350\264\246\346\210\267", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "\347\275\221\347\273\234\351\241\265", nullptr));
@@ -727,6 +866,25 @@ public:
 
         comConnect->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213\350\277\236\346\216\245", nullptr));
         comDisconnect->setText(QCoreApplication::translate("MainWindow", "\346\226\255\345\274\200\350\277\236\346\216\245", nullptr));
+        label->setText(QCoreApplication::translate("MainWindow", "\350\276\223\345\207\272\344\277\241\346\201\257", nullptr));
+        label_2->setText(QCoreApplication::translate("MainWindow", "modbus RTU\351\205\215\347\275\256", nullptr));
+        label_8->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213\345\234\260\345\235\200", nullptr));
+        label_9->setText(QCoreApplication::translate("MainWindow", "\346\225\260\351\207\217", nullptr));
+        label_6->setText(QCoreApplication::translate("MainWindow", "\344\273\216\346\234\272\345\234\260\345\235\200", nullptr));
+        label_7->setText(QCoreApplication::translate("MainWindow", "\345\212\237\350\203\275\347\240\201", nullptr));
+        functionCode->setItemText(0, QCoreApplication::translate("MainWindow", "0x01", nullptr));
+        functionCode->setItemText(1, QCoreApplication::translate("MainWindow", "0x02", nullptr));
+        functionCode->setItemText(2, QCoreApplication::translate("MainWindow", "0x03", nullptr));
+        functionCode->setItemText(3, QCoreApplication::translate("MainWindow", "0x04", nullptr));
+        functionCode->setItemText(4, QCoreApplication::translate("MainWindow", "0x05", nullptr));
+        functionCode->setItemText(5, QCoreApplication::translate("MainWindow", "0x06", nullptr));
+        functionCode->setItemText(6, QCoreApplication::translate("MainWindow", "0x0f", nullptr));
+        functionCode->setItemText(7, QCoreApplication::translate("MainWindow", "0x10", nullptr));
+
+        addTaskBtn->setText(QCoreApplication::translate("MainWindow", "\346\267\273\345\212\240\350\257\273\345\217\226\344\273\273\345\212\241", nullptr));
+        deleteTaskBtn->setText(QCoreApplication::translate("MainWindow", "\345\210\240\351\231\244\350\257\273\345\217\226\344\273\273\345\212\241", nullptr));
+        sendCycle->setPlaceholderText(QCoreApplication::translate("MainWindow", "\350\257\273\345\217\226\345\221\250\346\234\237", nullptr));
+        cycleCheck->setText(QCoreApplication::translate("MainWindow", "\345\256\232\346\227\266\350\257\273\345\217\226", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "\345\267\245\345\205\267\351\241\265", nullptr));
         label_5->setText(QCoreApplication::translate("MainWindow", "\350\264\246\346\210\267\351\241\265", nullptr));
         timeLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));

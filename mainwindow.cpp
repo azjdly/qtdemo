@@ -55,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
+    QIntValidator *validator = new QIntValidator(0, 99999, this); // 只允许 0-99999
+    ui->sendCycle->setValidator(validator);
 
     qBtnGroup();
     timeShow();
@@ -576,5 +578,24 @@ void MainWindow::updateSerialPorts()
 void MainWindow::on_comDisconnect_clicked()
 {
     emit modbusDisconnect();
+}
+
+
+void MainWindow::on_addTaskBtn_clicked()
+{
+    // 获取各个参数
+    int slaveAddress = ui->slaveAddress->value();
+    int startAddress = ui->startAddress->value();
+    int coils = ui->coils->value();
+    QString functionCode = ui->functionCode->currentText();
+
+}
+
+
+
+
+void MainWindow::on_deleteBtn_clicked()
+{
+
 }
 
