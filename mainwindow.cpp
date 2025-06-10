@@ -47,11 +47,16 @@ MainWindow::MainWindow(QWidget *parent)
     m_rightMenuAnimation->setEasingCurve(QEasingCurve::InOutQuad);
 
     QGridLayout *layout = new QGridLayout(ui->gridtest);
-
-    this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
-    HWND hwnd = (HWND)this->winId();
+     //| Qt::FramelessWindowHint
+     this->setWindowFlags(Qt::Window | Qt::WindowMinMaxButtonsHint | Qt::FramelessWindowHint | Qt::WindowSystemMenuHint);
+    DwmEnableComposition(DWM_EC_ENABLECOMPOSITION); // windows7 need disable.
+    HWND hwnd = reinterpret_cast<HWND>(winId());
     DWORD style = GetWindowLong(hwnd, GWL_STYLE);
-    ::SetWindowLong(hwnd, GWL_STYLE, style | WS_MAXIMIZEBOX | WS_THICKFRAME |WS_CAPTION );
+    SetWindowLongPtr(hwnd, GWL_STYLE, style | WS_MAXIMIZEBOX | WS_THICKFRAME | WS_CAPTION);
+    // add window shadow.
+    const MARGINS shadow = { 1, 1, 1, 1 };
+    DwmExtendFrameIntoClientArea(HWND(winId()), &shadow);
+
 
 
 
@@ -396,8 +401,10 @@ bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr
     MSG *msg = static_cast<MSG *>(message);
      if(msg->message == WM_NCCALCSIZE)
      {
-         *result = 0;
-         return true;
+        if (msg->wParam == TRUE) {
+             *result = 0;
+             return true;
+        }
      }
     if (msg->message == WM_DEVICECHANGE) {
         if (msg->wParam == DBT_DEVICEARRIVAL || msg->wParam == DBT_DEVICEREMOVECOMPLETE) {
@@ -468,7 +475,25 @@ bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr
         }
         return true;
     }
+    if(msg->message == WM_GETMINMAXINFO)
+    {
+        QScreen *screen = windowHandle()->screen();
 
+        qreal m_dpiScale = screen->devicePixelRatio();
+        if (::IsZoomed(msg->hwnd)) {
+            RECT frame = { 0, 0, 0, 0 };
+            AdjustWindowRectEx(&frame, WS_OVERLAPPEDWINDOW, FALSE, 0);
+            frame.left = abs(frame.left);
+            frame.top = abs(frame.bottom);
+            this->setContentsMargins(int(frame.left / m_dpiScale), int(frame.top / m_dpiScale), int(frame.right / m_dpiScale), int(frame.bottom / m_dpiScale));
+        }
+        else {
+            this->setContentsMargins(0, 0, 0, 0);
+        }
+
+        *result = ::DefWindowProc(msg->hwnd, msg->message, msg->wParam, msg->lParam);
+        return true;
+    }
     return QWidget::nativeEvent(eventType, message, result);
 }
 

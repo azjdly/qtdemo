@@ -19,7 +19,7 @@ CXXFLAGS      = -fno-keep-inline-dllexport -Wa,-mbig-obj -O2 -std=gnu++1z -Wall 
 INCPATH       = -I. -IE:/QT/6.5.3/mingw_64/include -IE:/QT/6.5.3/mingw_64/include/QtPrintSupport -IE:/QT/6.5.3/mingw_64/include/QtWidgets -IE:/QT/6.5.3/mingw_64/include/QtGui -IE:/QT/6.5.3/mingw_64/include/QtSerialBus -IE:/QT/6.5.3/mingw_64/include/QtSerialPort -IE:/QT/6.5.3/mingw_64/include/QtNetwork -IE:/QT/6.5.3/mingw_64/include/QtCore -Irelease -I. -I/include -IE:/QT/6.5.3/mingw_64/mkspecs/win32-g++ 
 LINKER      =        g++
 LFLAGS        =        -Wl,-s -Wl,-subsystem,windows -mthreads
-LIBS        =        -luser32 -lsetupapi E:/QT/6.5.3/mingw_64/lib/libQt6PrintSupport.a E:/QT/6.5.3/mingw_64/lib/libQt6Widgets.a E:/QT/6.5.3/mingw_64/lib/libQt6Gui.a E:/QT/6.5.3/mingw_64/lib/libQt6SerialBus.a E:/QT/6.5.3/mingw_64/lib/libQt6SerialPort.a E:/QT/6.5.3/mingw_64/lib/libQt6Network.a E:/QT/6.5.3/mingw_64/lib/libQt6Core.a -lmingw32 E:/QT/6.5.3/mingw_64/lib/libQt6EntryPoint.a -lshell32  
+LIBS        =        -luser32 -lsetupapi -ldwmapi E:/QT/6.5.3/mingw_64/lib/libQt6PrintSupport.a E:/QT/6.5.3/mingw_64/lib/libQt6Widgets.a E:/QT/6.5.3/mingw_64/lib/libQt6Gui.a E:/QT/6.5.3/mingw_64/lib/libQt6SerialBus.a E:/QT/6.5.3/mingw_64/lib/libQt6SerialPort.a E:/QT/6.5.3/mingw_64/lib/libQt6Network.a E:/QT/6.5.3/mingw_64/lib/libQt6Core.a -lmingw32 E:/QT/6.5.3/mingw_64/lib/libQt6EntryPoint.a -lshell32  
 QMAKE         = E:/QT/6.5.3/mingw_64/bin/qmake.exe
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -1061,6 +1061,7 @@ release/moc_modbusworker.cpp: modbusworker.h \
 		E:/QT/6.5.3/mingw_64/include/QtCore/qvarlengtharray.h \
 		E:/QT/6.5.3/mingw_64/include/QtCore/q20memory.h \
 		E:/QT/6.5.3/mingw_64/include/QtCore/QMap \
+		E:/QT/6.5.3/mingw_64/include/QtCore/QString \
 		release/moc_predefs.h \
 		E:/QT/6.5.3/mingw_64/bin/moc.exe
 	'E:\QT\6.5.3\mingw_64\bin\moc.exe' $(DEFINES) --include 'C:/Users/91247/Desktop/MyC++/Qt project/myui/release/moc_predefs.h' -IE:/QT/6.5.3/mingw_64/mkspecs/win32-g++ -I'C:/Users/91247/Desktop/MyC++/Qt project/myui' -IE:/QT/6.5.3/mingw_64/include -IE:/QT/6.5.3/mingw_64/include/QtPrintSupport -IE:/QT/6.5.3/mingw_64/include/QtWidgets -IE:/QT/6.5.3/mingw_64/include/QtGui -IE:/QT/6.5.3/mingw_64/include/QtSerialBus -IE:/QT/6.5.3/mingw_64/include/QtSerialPort -IE:/QT/6.5.3/mingw_64/include/QtNetwork -IE:/QT/6.5.3/mingw_64/include/QtCore -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include modbusworker.h -o release/moc_modbusworker.cpp
@@ -4822,17 +4823,19 @@ release/mainwindow.o: mainwindow.cpp mainwindow.h \
 		ui_mainwindow.h \
 		E:/QT/6.5.3/mingw_64/include/QtGui/QIcon \
 		E:/QT/6.5.3/mingw_64/include/QtWidgets/QApplication \
+		E:/QT/6.5.3/mingw_64/include/QtWidgets/QCheckBox \
 		E:/QT/6.5.3/mingw_64/include/QtWidgets/QComboBox \
 		E:/QT/6.5.3/mingw_64/include/QtWidgets/QFormLayout \
 		E:/QT/6.5.3/mingw_64/include/QtWidgets/QFrame \
 		E:/QT/6.5.3/mingw_64/include/QtWidgets/QGridLayout \
 		E:/QT/6.5.3/mingw_64/include/QtWidgets/QHBoxLayout \
 		E:/QT/6.5.3/mingw_64/include/QtWidgets/QLabel \
+		E:/QT/6.5.3/mingw_64/include/QtWidgets/QLineEdit \
 		E:/QT/6.5.3/mingw_64/include/QtWidgets/QPushButton \
 		E:/QT/6.5.3/mingw_64/include/QtWidgets/QSpacerItem \
+		E:/QT/6.5.3/mingw_64/include/QtWidgets/QSpinBox \
 		E:/QT/6.5.3/mingw_64/include/QtWidgets/QSplitter \
 		E:/QT/6.5.3/mingw_64/include/QtWidgets/QStackedWidget \
-		E:/QT/6.5.3/mingw_64/include/QtWidgets/QTextBrowser \
 		E:/QT/6.5.3/mingw_64/include/QtWidgets/QTextEdit \
 		E:/QT/6.5.3/mingw_64/include/QtWidgets/QToolButton \
 		E:/QT/6.5.3/mingw_64/include/QtWidgets/QVBoxLayout \
@@ -4975,8 +4978,8 @@ release/modbusworker.o: modbusworker.cpp modbusworker.h \
 		E:/QT/6.5.3/mingw_64/include/QtCore/qvarlengtharray.h \
 		E:/QT/6.5.3/mingw_64/include/QtCore/q20memory.h \
 		E:/QT/6.5.3/mingw_64/include/QtCore/QMap \
-		E:/QT/6.5.3/mingw_64/include/QtCore/QDebug \
 		E:/QT/6.5.3/mingw_64/include/QtCore/QString \
+		E:/QT/6.5.3/mingw_64/include/QtCore/QDebug \
 		E:/QT/6.5.3/mingw_64/include/QtCore/QMetaType
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o release/modbusworker.o modbusworker.cpp
 

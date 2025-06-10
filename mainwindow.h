@@ -10,7 +10,7 @@
 #include "modbusworker.h"
 #include <QWindow>
 #include <windowsx.h>
-
+#include <dwmapi.h>
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -43,6 +43,7 @@ public:
     void qSplitterConfig();
     void comConfig();
     void animateStackWidgetChange(int newIndex);
+
 private slots:
     void on_CloseBtn_clicked();
 
@@ -64,6 +65,7 @@ private slots:
 signals:
     modbusConnect( QMap<QString,QVariant> settings);
     modbusDisconnect();
+
 protected:
     bool eventFilter(QObject *watched, QEvent *event)override;
     bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result) override;
