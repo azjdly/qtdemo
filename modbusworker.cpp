@@ -29,13 +29,23 @@ void ModbusWorker::connectToDevice( QMap<QString,QVariant> settings)
 
     if (!modbusMaster->connectDevice()) {
         qDebug() << "Modbus 设备连接失败!";
-    } else {
+
+    } else if(modbusMaster->state() == QModbusDevice::ConnectedState) {
         qDebug() << "Modbus 设备连接成功!";
+        emit modbusConnected(settings["portName"].toString());
     }
 
 }
 
-void ModbusWorker::disconnectDevice()
+void ModbusWorker::disconnectToDevice()
 {
+    if(modbusMaster != nullptr)
+    {
+        modbusMaster->disconnectDevice();
+        emit modbusDisconnected();
+        qDebug()<<"设备关闭成功";
 
+    }
 }
+
+

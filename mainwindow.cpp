@@ -21,13 +21,26 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    ui->comDisconnect->setDisabled(true);
     modbusThread=new QThread;
     modbusWork=new ModbusWorker;
     modbusWork->moveToThread(modbusThread);
-    QObject::connect(this, &MainWindow::modbusStart, modbusWork, &ModbusWorker::connectToDevice);
+    QObject::connect(this, &MainWindow::modbusConnect, modbusWork, &ModbusWorker::connectToDevice);
+    QObject::connect(this, &MainWindow::modbusDisconnect, modbusWork, &ModbusWorker::disconnectToDevice);
     QObject::connect(modbusWork, &ModbusWorker::workFinished, modbusThread, &QThread::quit);
     QObject::connect(modbusWork, &ModbusWorker::workFinished, modbusWork, &ModbusWorker::deleteLater);
     QObject::connect(modbusThread, &QThread::finished, modbusWork, &QThread::deleteLater);
+    QObject::connect(modbusWork,&ModbusWorker::modbusConnected,this,[=](QString portName){
+        ui->comConnect->setDisabled(true);
+        ui->comDisconnect->setDisabled(false);
+        ui->comStateLabel->setText(portName+"已连接");
+    });
+    QObject::connect(modbusWork,&ModbusWorker::modbusDisconnected,this,[=](){
+
+        ui->comConnect->setDisabled(false);
+        ui->comDisconnect->setDisabled(true);
+        ui->comStateLabel->setText("未连接");
+    });
     modbusThread->start();
 
     m_rightMenuAnimation=new QVariantAnimation;
@@ -38,7 +51,10 @@ MainWindow::MainWindow(QWidget *parent)
     this->setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     HWND hwnd = (HWND)this->winId();
     DWORD style = GetWindowLong(hwnd, GWL_STYLE);
-    ::SetWindowLong(hwnd, GWL_STYLE, style | WS_MAXIMIZEBOX | WS_THICKFRAME | WS_CAPTION);
+    ::SetWindowLong(hwnd, GWL_STYLE, style | WS_MAXIMIZEBOX | WS_THICKFRAME |WS_CAPTION );
+
+
+
 
     qBtnGroup();
     timeShow();
@@ -357,7 +373,7 @@ void MainWindow::on_comConnect_clicked()
     else if (flowControlText == "Hardware") settings["flowControl"] = QVariant::fromValue(QSerialPort::HardwareControl);
     else if (flowControlText == "Software") settings["flowControl"] = QVariant::fromValue(QSerialPort::SoftwareControl);
 
-    emit modbusStart(settings); // 发送信号
+    emit modbusConnect(settings); // 发送信号
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event)
@@ -376,11 +392,11 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event)
 bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr *result)
 {
     MSG *msg = static_cast<MSG *>(message);
-    if(msg->message == WM_NCCALCSIZE)
-    {
-        *result = 0;
-        return true;
-    }
+     if(msg->message == WM_NCCALCSIZE)
+     {
+         *result = 0;
+         return true;
+     }
     if (msg->message == WM_DEVICECHANGE) {
         if (msg->wParam == DBT_DEVICEARRIVAL || msg->wParam == DBT_DEVICEREMOVECOMPLETE) {
             qDebug() << "Device change detected, updating COM ports...";
@@ -554,5 +570,11 @@ void MainWindow::updateSerialPorts()
     } else if (!newPorts.isEmpty()) {
         ui->comportBox->setCurrentText(newPorts.first()); // 选择最大项
     }
+}
+
+
+void MainWindow::on_comDisconnect_clicked()
+{
+    emit modbusDisconnect();
 }
 

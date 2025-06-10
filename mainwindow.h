@@ -55,8 +55,11 @@ private slots:
     void on_idBtn_clicked();
 
     void on_comConnect_clicked();
+    void on_comDisconnect_clicked();
+
 signals:
-    modbusStart( QMap<QString,QVariant> settings);
+    modbusConnect( QMap<QString,QVariant> settings);
+    modbusDisconnect();
 protected:
     bool eventFilter(QObject *watched, QEvent *event)override;
     bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result) override;

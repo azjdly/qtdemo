@@ -6,7 +6,7 @@
 #include <QSerialPort>
 #include <QVariant>  // 必须添加
 #include <QMap>
-
+#include <QString>
 class ModbusWorker : public QObject
 {
     Q_OBJECT
@@ -17,10 +17,13 @@ public:
 
 public slots:
     void connectToDevice( QMap<QString,QVariant> settings); // 连接设备
-    void disconnectDevice(); // 断开连接
+    void disconnectToDevice(); // 断开连接
 
 signals:
     workFinished();
+    modbusConnected(QString portName);
+    modbusDisconnected();
+
 private:
     QModbusRtuSerialMaster *modbusMaster = nullptr;
 };

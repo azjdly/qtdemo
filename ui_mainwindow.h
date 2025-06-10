@@ -23,7 +23,6 @@
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSplitter>
 #include <QtWidgets/QStackedWidget>
-#include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QTextEdit>
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QVBoxLayout>
@@ -87,7 +86,7 @@ public:
     QVBoxLayout *verticalLayout_5;
     QWidget *widget_7;
     QGridLayout *gridLayout_12;
-    QLabel *label_6;
+    QLabel *comStateLabel;
     QWidget *widget;
     QFormLayout *formLayout;
     QLabel *comportLabel;
@@ -106,9 +105,6 @@ public:
     QVBoxLayout *verticalLayout_3;
     QPushButton *comConnect;
     QPushButton *comDisconnect;
-    QWidget *widget_3;
-    QGridLayout *gridLayout_6;
-    QLabel *label_2;
     QWidget *widget_5;
     QVBoxLayout *verticalLayout_6;
     QWidget *widget_8;
@@ -116,10 +112,6 @@ public:
     QTextEdit *textEdit;
     QWidget *widget_9;
     QGridLayout *gridLayout_11;
-    QTextBrowser *textBrowser;
-    QWidget *widget_10;
-    QHBoxLayout *horizontalLayout_10;
-    QPushButton *pushButton_5;
     QWidget *rightMenu;
     QGridLayout *gridLayout_4;
     QStackedWidget *rightStack;
@@ -447,11 +439,11 @@ public:
         widget_7->setObjectName("widget_7");
         gridLayout_12 = new QGridLayout(widget_7);
         gridLayout_12->setObjectName("gridLayout_12");
-        label_6 = new QLabel(widget_7);
-        label_6->setObjectName("label_6");
-        label_6->setAlignment(Qt::AlignCenter);
+        comStateLabel = new QLabel(widget_7);
+        comStateLabel->setObjectName("comStateLabel");
+        comStateLabel->setAlignment(Qt::AlignCenter);
 
-        gridLayout_12->addWidget(label_6, 0, 0, 1, 1);
+        gridLayout_12->addWidget(comStateLabel, 0, 0, 1, 1);
 
 
         verticalLayout_5->addWidget(widget_7);
@@ -558,23 +550,9 @@ public:
 
         verticalLayout_5->addWidget(widget_6);
 
-        widget_3 = new QWidget(widget_4);
-        widget_3->setObjectName("widget_3");
-        gridLayout_6 = new QGridLayout(widget_3);
-        gridLayout_6->setObjectName("gridLayout_6");
-        label_2 = new QLabel(widget_3);
-        label_2->setObjectName("label_2");
-        label_2->setAlignment(Qt::AlignCenter);
-
-        gridLayout_6->addWidget(label_2, 0, 0, 1, 1);
-
-
-        verticalLayout_5->addWidget(widget_3);
-
         verticalLayout_5->setStretch(0, 1);
         verticalLayout_5->setStretch(1, 6);
-        verticalLayout_5->setStretch(2, 2);
-        verticalLayout_5->setStretch(3, 4);
+        verticalLayout_5->setStretch(2, 3);
 
         horizontalLayout_8->addWidget(widget_4);
 
@@ -598,26 +576,11 @@ public:
         widget_9->setObjectName("widget_9");
         gridLayout_11 = new QGridLayout(widget_9);
         gridLayout_11->setObjectName("gridLayout_11");
-        textBrowser = new QTextBrowser(widget_9);
-        textBrowser->setObjectName("textBrowser");
-
-        gridLayout_11->addWidget(textBrowser, 0, 0, 1, 1);
-
 
         verticalLayout_6->addWidget(widget_9);
 
-        widget_10 = new QWidget(widget_5);
-        widget_10->setObjectName("widget_10");
-        horizontalLayout_10 = new QHBoxLayout(widget_10);
-        horizontalLayout_10->setObjectName("horizontalLayout_10");
-        pushButton_5 = new QPushButton(widget_10);
-        pushButton_5->setObjectName("pushButton_5");
-
-        horizontalLayout_10->addWidget(pushButton_5);
-
-
-        verticalLayout_6->addWidget(widget_10);
-
+        verticalLayout_6->setStretch(0, 3);
+        verticalLayout_6->setStretch(1, 2);
 
         horizontalLayout_8->addWidget(widget_5);
 
@@ -708,7 +671,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        mainStack->setCurrentIndex(0);
+        mainStack->setCurrentIndex(3);
         databitBox->setCurrentIndex(3);
         rightStack->setCurrentIndex(0);
 
@@ -732,7 +695,7 @@ public:
         toolBtn->setText(QCoreApplication::translate("MainWindow", "\345\267\245\345\205\267", nullptr));
         idBtn->setText(QCoreApplication::translate("MainWindow", "\350\264\246\346\210\267", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "\347\275\221\347\273\234\351\241\265", nullptr));
-        label_6->setText(QCoreApplication::translate("MainWindow", "\346\234\252\350\277\236\346\216\245", nullptr));
+        comStateLabel->setText(QCoreApplication::translate("MainWindow", "\346\234\252\350\277\236\346\216\245", nullptr));
         comportLabel->setText(QCoreApplication::translate("MainWindow", "\347\253\257\345\217\243", nullptr));
         baudrateLabel->setText(QCoreApplication::translate("MainWindow", "\346\263\242\347\211\271\347\216\207", nullptr));
         baudrateBox->setItemText(0, QCoreApplication::translate("MainWindow", "9600", nullptr));
@@ -764,8 +727,6 @@ public:
 
         comConnect->setText(QCoreApplication::translate("MainWindow", "\345\274\200\345\247\213\350\277\236\346\216\245", nullptr));
         comDisconnect->setText(QCoreApplication::translate("MainWindow", "\346\226\255\345\274\200\350\277\236\346\216\245", nullptr));
-        label_2->setText(QCoreApplication::translate("MainWindow", "\346\216\245\345\217\227\345\217\221\351\200\201\351\205\215\347\275\256", nullptr));
-        pushButton_5->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "\345\267\245\345\205\267\351\241\265", nullptr));
         label_5->setText(QCoreApplication::translate("MainWindow", "\350\264\246\346\210\267\351\241\265", nullptr));
         timeLabel->setText(QCoreApplication::translate("MainWindow", "TextLabel", nullptr));
