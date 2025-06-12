@@ -15,11 +15,52 @@
 #include <QHoverEvent>
 #include "modbusworker.h"
 #include <QThread>
+#include <QCheckBox>
+
+
+
+
+void MainWindow::applySavedQSS()
+{
+    QSettings settings("MyApp", "StyleConfig");
+
+    // 先检查是否已有 `qssConfig`
+    if (!settings.contains("qssConfig")) {
+        settings.setValue("qssConfig", "blue"); // 如果没有，就初始化为 `blue`
+    }
+
+    // 获取当前配置的 QSS 样式名
+    QString qssConfig = settings.value("qssConfig").toString();
+
+    // 确保 `styleSheets` 中存在该样式
+    if (!styleSheets.contains(qssConfig)) {
+        qDebug() << "错误: QMap 中没有找到样式：" << qssConfig;
+        return;
+    }
+
+    // 从 QMap 获取 QSS 文件路径
+    QString qssPath = styleSheets[qssConfig];
+
+    // 读取 QSS 文件并应用样式
+    QFile file(qssPath);
+    if (file.open(QFile::ReadOnly)) {
+        QString styleSheet = file.readAll();
+        qApp->setStyleSheet(styleSheet);
+        file.close();
+    }
+}
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    applySavedQSS();
+    QList<QString> styleList = styleSheets.keys();
+    m_stylemenu=new stylemenu(nullptr,styleList);
+    connect(m_stylemenu,&stylemenu::changeStyle,this,&MainWindow::changeStyle);
+
 
     ui->comDisconnect->setDisabled(true);
     modbusThread=new QThread;
@@ -29,26 +70,56 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(this, &MainWindow::modbusDisconnect, modbusWork, &ModbusWorker::disconnectToDevice);
     QObject::connect(modbusWork, &ModbusWorker::workFinished, modbusThread, &QThread::quit);
     QObject::connect(modbusWork, &ModbusWorker::workFinished, modbusWork, &ModbusWorker::deleteLater);
-    QObject::connect(modbusThread, &QThread::finished, modbusWork, &QThread::deleteLater);
+    QObject::connect(modbusThread, &QThread::finished, modbusThread, &QThread::deleteLater);
+    QObject::connect(this, &MainWindow::modbusSend, modbusWork, &ModbusWorker::modbusSend);
     QObject::connect(modbusWork,&ModbusWorker::modbusConnected,this,[=](QString portName){
         ui->comConnect->setDisabled(true);
         ui->comDisconnect->setDisabled(false);
+        ui->cycleCheck->setDisabled(false);
+        ui->singleBtn->setDisabled(false);
         ui->comStateLabel->setText(portName+"已连接");
+
+
     });
     QObject::connect(modbusWork,&ModbusWorker::modbusDisconnected,this,[=](){
 
         ui->comConnect->setDisabled(false);
         ui->comDisconnect->setDisabled(true);
+        ui->cycleCheck->setCheckState(Qt::Unchecked);
+        ui->cycleCheck->setDisabled(true);
+        ui->singleBtn->setDisabled(true);
         ui->comStateLabel->setText("未连接");
     });
+    QObject::connect(modbusWork,&ModbusWorker::receiveCorrect,this,[=](QString data){
+        QString currentTimeStr = QDateTime::currentDateTime().toString("hh:mm::ss");
+        ui->modbusText->append(currentTimeStr + ":" +data);
+
+    });
+    QObject::connect(modbusWork,&ModbusWorker::receiverError,this,[=](QString data){
+        QString currentTimeStr = QDateTime::currentDateTime().toString("hh:mm::ss");
+        ui->modbusText->append(currentTimeStr + ":" +data);
+    });
     modbusThread->start();
+    modbusTimer = new QTimer(this);
+    connect(modbusTimer, &QTimer::timeout, this, [=](){
+        for (const ModbusData &task : modbuslist) {
+            emit modbusSend(task.slaveAddress, task.startAddress, task.quantity, task.functionCode, task.values);
+        }
+    });
+
+
+
+
+
+
+
 
     m_rightMenuAnimation=new QVariantAnimation;
     m_rightMenuAnimation->setEasingCurve(QEasingCurve::InOutQuad);
 
     QGridLayout *layout = new QGridLayout(ui->gridtest);
-     //| Qt::FramelessWindowHint
-     this->setWindowFlags(Qt::Window | Qt::WindowMinMaxButtonsHint | Qt::FramelessWindowHint | Qt::WindowSystemMenuHint);
+    //| Qt::FramelessWindowHint
+    this->setWindowFlags(Qt::Window | Qt::WindowMinMaxButtonsHint | Qt::FramelessWindowHint | Qt::WindowSystemMenuHint);
     DwmEnableComposition(DWM_EC_ENABLECOMPOSITION); // windows7 need disable.
     HWND hwnd = reinterpret_cast<HWND>(winId());
     DWORD style = GetWindowLong(hwnd, GWL_STYLE);
@@ -60,8 +131,9 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
-    QIntValidator *validator = new QIntValidator(0, 99999, this); // 只允许 0-99999
-    ui->sendCycle->setValidator(validator);
+    taskListModel = new QStringListModel(this);
+    ui->taskList->setModel(taskListModel);
+
 
     qBtnGroup();
     timeShow();
@@ -71,13 +143,18 @@ MainWindow::MainWindow(QWidget *parent)
 
     this->setMinimumSize(300, 200);
 
-
+#ifdef Q_OS_WIN
+    qDebug() << "当前系统是 Windows!";
+#else
+    qDebug() << "当前系统不是 Windows!";
+#endif
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
     delete m_rightMenuAnimation;
+    delete m_stylemenu;
 }
 
 void MainWindow::qBtnGroup()
@@ -481,7 +558,7 @@ bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr
 
         qreal m_dpiScale = screen->devicePixelRatio();
         if (::IsZoomed(msg->hwnd)) {
-            RECT frame = { 0, 0, 0, 0 };
+            RECT frame = { 0, 0, 0, 0};
             AdjustWindowRectEx(&frame, WS_OVERLAPPEDWINDOW, FALSE, 0);
             frame.left = abs(frame.left);
             frame.top = abs(frame.bottom);
@@ -498,22 +575,6 @@ bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *event) {
-    if (event->button() == Qt::LeftButton) {
-        // 检查鼠标是否在标题栏（TitleWidget）内
-        if (ui->TitleWidget->rect().contains(ui->TitleWidget->mapFromGlobal(event->globalPos()))) {
-            // if (ReleaseCapture()) {
-            //     QWidget* pWindow = this->window();
-            //     if (pWindow->isWindow()) {
-            //         SendMessage(HWND(pWindow->winId()), WM_SYSCOMMAND, SC_MOVE | HTCAPTION, 0);
-            //         return; // 已处理，不再传递事件
-            //     }
-            // }
-             // if(windowHandle())
-             // {
-             //     windowHandle()->startSystemMove();
-             // }
-        }
-    }
     QWidget::mousePressEvent(event); // 其他情况正常处理
 }
 void MainWindow::mouseMoveEvent(QMouseEvent *event)
@@ -555,6 +616,15 @@ bool MainWindow::event(QEvent *event)
 {
     return QWidget::event(event);
 }
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if ( m_stylemenu->isVisible()) {
+        m_stylemenu->close(); // 关闭子窗口
+    }
+    event->accept(); // 继续主窗口关闭流程
+}
+
 
 
 
@@ -599,6 +669,21 @@ void MainWindow::updateSerialPorts()
     }
 }
 
+QVector<uint16_t> MainWindow::parseRegisterValues(const QString &hexString)
+{
+    QVector<uint16_t> values;
+    QStringList hexList = hexString.split(" "); // 以空格分隔多个值
+
+    for (const QString &hex : hexList) {
+        bool ok;
+        uint16_t value = static_cast<uint16_t>(hex.toUShort(&ok, 16)); // 转换为 16-bit 十六进制数
+        if (ok) {
+            values.append(value);
+        }
+    }
+    return values;
+}
+
 
 void MainWindow::on_comDisconnect_clicked()
 {
@@ -606,21 +691,192 @@ void MainWindow::on_comDisconnect_clicked()
 }
 
 
-void MainWindow::on_addTaskBtn_clicked()
-{
-    // 获取各个参数
+void MainWindow::on_addTaskBtn_clicked() {
     int slaveAddress = ui->slaveAddress->value();
     int startAddress = ui->startAddress->value();
-    int coils = ui->coils->value();
+    int quantity = ui->coils->value();
     QString functionCode = ui->functionCode->currentText();
+    QString registerValue = ui->regInput->text();
+
+    // 校验输入数据范围
+    if (slaveAddress < 1 || slaveAddress > 247 ||
+        startAddress < 0 || startAddress > 65535 ||
+        quantity < 1 || quantity > 125) {
+        QMessageBox::warning(this, "错误", "输入参数超出合法范围");
+        return;
+    }
+
+    // 仅当功能码为写入类型时才解析寄存器值
+    QVector<uint16_t> parsedValues;
+    if (functionCode == "0x05" || functionCode == "0x06" || functionCode == "0x0f" || functionCode == "0x10") {
+        parsedValues = parseRegisterValues(registerValue);
+        if (parsedValues.isEmpty()) {
+            QMessageBox::warning(this, "错误", "请输入正确的十六进制值");
+            return;
+        }
+    }
+
+    // 存入任务列表
+    ModbusData newTask = {slaveAddress, startAddress, quantity, functionCode, parsedValues};
+    modbuslist.append(newTask);
+
+    // 更新 QListView
+    QStringList taskList = taskListModel->stringList();
+    taskList.append(QString("设备: %1 | 地址: %2 | 数量: %3 | 功能码: %4")
+                        .arg(slaveAddress)
+                        .arg(startAddress)
+                        .arg(quantity)
+                        .arg(functionCode));
+
+    taskListModel->setStringList(taskList); // 更新模型
+
+    QMessageBox::information(this, "成功", "任务已添加");
 
 }
 
 
 
 
-void MainWindow::on_deleteBtn_clicked()
+
+
+void MainWindow::on_functionCode_currentIndexChanged(int index) {
+    // 获取当前选中的功能码
+    QString functionCode = ui->functionCode->itemText(index);
+
+    // 需要输入寄存器值的功能码（写操作）
+    QStringList writeFunctionCodes = {"0x05", "0x06", "0x0f", "0x10"};
+
+    if (writeFunctionCodes.contains(functionCode)) {
+        ui->regInput->clear();
+        ui->regInput->setEnabled(true);  // 启用输入框
+    } else {
+        ui->regInput->setEnabled(false);  // 仍然允许输入，但清空内容
+        ui->regInput->clear();           // 清空旧数据
+    }
+}
+
+
+void MainWindow::on_deleteTaskBtn_clicked() {
+    QModelIndex index = ui->taskList->currentIndex(); // 获取选中项索引
+    if (!index.isValid()) {
+        QMessageBox::warning(this, "错误", "请先选择要删除的任务");
+        return;
+    }
+
+    // 删除 QListView 里的项
+    QStringList taskList = taskListModel->stringList();
+    taskList.removeAt(index.row());
+    taskListModel->setStringList(taskList);
+
+    // 删除 QList<ModbusData> 里的对应项
+    if (index.row() < modbuslist.size()) {
+        modbuslist.removeAt(index.row());
+    }
+
+    QMessageBox::information(this, "成功", "任务已删除");
+}
+
+
+
+void MainWindow::on_cycleCheck_stateChanged(int arg1)
+{
+    if (ui->cycleCheck->checkState() == Qt::Checked)
+    {
+        // 选中了 checkbox，启动定时器
+        modbusTimer->setInterval(ui->spinBox->value()); // 例如每秒触发一次
+        modbusTimer->start();
+        qDebug() << "定时器已启动";
+    }
+    else
+    {
+        // 未选中 checkbox，关闭定时器
+        modbusTimer->stop();
+        qDebug() << "定时器已关闭";
+    }
+}
+
+
+
+
+void MainWindow::on_cleanBtn_clicked()
+{
+    ui->modbusText->clear();
+}
+
+
+void MainWindow::on_singleBtn_clicked()
+{
+    int slaveAddress = ui->slaveAddress->value();
+    int startAddress = ui->startAddress->value();
+    int quantity = ui->coils->value();
+    QString functionCode = ui->functionCode->currentText();
+    QString registerValue = ui->regInput->text();
+
+    // 校验输入数据范围
+    if (slaveAddress < 1 || slaveAddress > 247 ||
+        startAddress < 0 || startAddress > 65535 ||
+        quantity < 1 || quantity > 125) {
+        QMessageBox::warning(this, "错误", "输入参数超出合法范围");
+        return;
+    }
+
+    // 仅当功能码为写入类型时才解析寄存器值
+    QVector<uint16_t> parsedValues;
+    if (functionCode == "0x05" || functionCode == "0x06" || functionCode == "0x0f" || functionCode == "0x10") {
+        parsedValues = parseRegisterValues(registerValue);
+        if (parsedValues.isEmpty()) {
+            QMessageBox::warning(this, "错误", "请输入正确的十六进制值");
+            return;
+        }
+    }
+    emit modbusSend(slaveAddress,startAddress,quantity,functionCode,parsedValues);
+}
+
+void MainWindow::on_QssBtn_clicked()
+{
+    if (m_stylemenu->isVisible()) {
+        m_stylemenu->hide();
+    } else {
+        // 1. 设置菜单大小（按主窗口比例）
+
+        int menuWidth = this->width()/3;
+        int menuHeight = this->height()/6;
+        m_stylemenu->resize(menuWidth, menuHeight);
+
+        // 2. 获取主窗口的全局中心点
+        QRect mainWindowRect = this->frameGeometry(); // 包含窗口装饰（标题栏等）
+        QPoint mainWindowCenter = mainWindowRect.center();
+
+        // 3. 计算菜单的左上角坐标（使菜单中心对齐主窗口中心）
+        int menuX = mainWindowCenter.x() - menuWidth / 2;
+        int menuY = mainWindowCenter.y() - menuHeight / 2;
+
+        // 4. 移动到全局坐标
+        m_stylemenu->move(menuX, menuY);
+        m_stylemenu->show();
+    }
+}
+void MainWindow::changeStyle(QString style)
 {
 
+    // 确保 `styleSheets` 里存在该样式
+    if (!styleSheets.contains(style)) {
+        return;
+    }
+
+    // 获取对应的 QSS 路径
+    QString qssPath = styleSheets[style];
+
+    // 读取 QSS 文件并应用样式
+    QFile file(qssPath);
+    if (file.open(QFile::ReadOnly)) {
+        QString styleSheet = file.readAll();
+        qApp->setStyleSheet(styleSheet);
+        file.close();
+
+        // **存储用户选择到 `QSettings`**
+        QSettings settings("MyApp", "StyleConfig");
+        settings.setValue("qssConfig", style);
+    }
 }
 

@@ -26,6 +26,7 @@
         <file>icon/toolB.png</file>
         <file>icon/com.png</file>
         <file>icon/comB.png</file>
+        <file>icon/panel.png</file>
     </qresource>
     <qresource prefix="/picture">
         <file>picture/building.png</file>

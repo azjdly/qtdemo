@@ -1,0 +1,85 @@
+QWidget#TitleWidget {
+    background-color: #1e3a5f;  /* 深蓝色标题栏 */
+}
+QLabel#IconLabel {
+    color: white;
+}
+QLineEdit#SearchEdit {
+    border-radius: 5px;
+    background-color: #f0f4f8;  /* 浅蓝灰色背景 */
+    border: 1px solid #a0c0e0;  /* 柔和蓝色边框 */
+}
+QWidget#leftMenu,
+QWidget#rightMenu {
+    background-color: #2d5a9d;  /* 中等蓝色菜单背景 */
+    color: white;
+}
+QWidget#MainWidget {
+    background-color: #f8fafc;  /* 非常浅的蓝白色 */
+}
+QPushButton#CloseBtn,
+QPushButton#MaxBtn,
+QPushButton#MinBtn,
+QPushButton#QssBtn,
+QPushButton#IconBtn {
+    background-color: #1e3a5f;  /* 与标题栏一致的深蓝 */
+    color: white;
+    border: 0px;
+    border-radius: 0px;
+}
+QPushButton#SearchBtn {
+    background-color: #3a6bc0;  /* 鲜艳的操作蓝色 */
+    border-radius: 5px;
+}
+/* 标题栏按钮悬停效果 */
+QPushButton#CloseBtn:hover,
+QPushButton#MaxBtn:hover,
+QPushButton#MinBtn:hover,
+QPushButton#QssBtn:hover,
+QPushButton#SearchBtn:hover {
+    background-color: #3a6bc0;  /* 比基础色更亮的蓝色 */
+}
+
+/* 左侧工具按钮 */
+QToolButton#networkBtn,
+QToolButton#plotBtn,
+QToolButton#startBtn,
+QToolButton#idBtn,
+QToolButton#toolBtn,
+QToolButton#modbusBtn {
+    background-color: #2d5a9d;  /* 与菜单背景一致 */
+    color: white;
+    border: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+/* 工具按钮悬停效果 */
+QToolButton#networkBtn:hover,
+QToolButton#plotBtn:hover,
+QToolButton#startBtn:hover,
+QToolButton#idBtn:hover,
+QToolButton#toolBtn:hover,
+QToolButton#modbusBtn:hover {
+    background-color: #4a7bc8;  /* 浅亮蓝色 */
+}
+/* 选中状态效果 */
+QToolButton#networkBtn:checked,
+QToolButton#plotBtn:checked,
+QToolButton#startBtn:checked,
+QToolButton#modbusBtn:checked {
+    border-left: 3px solid white;
+    background-color: #15325a;  /* 深海军蓝 */
+}
+/* 按钮按压效果 */
+QToolButton#idBtn:pressed,
+QToolButton#toolBtn:pressed {
+    background-color: #15325a;  /* 与选中状态一致的深蓝 */
+}
+QTextEdit#modbusText, QListView#taskList {
+
+border: 2px solid #d0d7de;
+
+border-radius: 4px;   /* 可选，圆角 */
+
+
+}

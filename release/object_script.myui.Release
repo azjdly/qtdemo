@@ -5,6 +5,7 @@ release/modbusworker.o
 release/mygrid.o
 release/myplot.o
 release/qcustomplot.o
+release/stylemenu.o
 release/qrc_PictureRes.o
 release/qrc_style.o
 release/moc_carouselwidget.o
@@ -13,3 +14,4 @@ release/moc_modbusworker.o
 release/moc_mygrid.o
 release/moc_myplot.o
 release/moc_qcustomplot.o
+release/moc_stylemenu.o

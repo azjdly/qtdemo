@@ -5,6 +5,7 @@ debug/modbusworker.o
 debug/mygrid.o
 debug/myplot.o
 debug/qcustomplot.o
+debug/stylemenu.o
 debug/qrc_PictureRes.o
 debug/qrc_style.o
 debug/moc_carouselwidget.o
@@ -13,3 +14,4 @@ debug/moc_modbusworker.o
 debug/moc_mygrid.o
 debug/moc_myplot.o
 debug/moc_qcustomplot.o
+debug/moc_stylemenu.o

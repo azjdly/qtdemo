@@ -17,7 +17,8 @@ SOURCES += \
     modbusworker.cpp \
     mygrid.cpp \
     myplot.cpp \
-    qcustomplot.cpp
+    qcustomplot.cpp \
+    stylemenu.cpp
 
 HEADERS += \
     carouselwidget.h \
@@ -25,10 +26,12 @@ HEADERS += \
     modbusworker.h \
     mygrid.h \
     myplot.h \
-    qcustomplot.h
+    qcustomplot.h \
+    stylemenu.h
 
 FORMS += \
-    mainwindow.ui
+    mainwindow.ui \
+    stylemenu.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -11,6 +11,9 @@
 #include <QWindow>
 #include <windowsx.h>
 #include <dwmapi.h>
+#include <QVector>
+#include <QSettings>
+#include "stylemenu.h"
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -21,19 +24,19 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
 private:
-    enum ResizeDirection {
-        NONE,
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT,
-        TOPLEFT,
-        TOPRIGHT,
-        BOTTOMLEFT,
-        BOTTOMRIGHT
+    struct ModbusData {
+        int slaveAddress;         // 从站地址
+        int startAddress;         // 起始地址
+        int quantity;             // 读取/写入的寄存器数量
+        QString functionCode;     // 功能码
+        QVector<uint16_t> values; // 16-bit 数据存储 (适用于 Modbus)
+    };
+    QMap<QString, QString> styleSheets = {
+        {"blue", ":/myqss/style/stylesheetBlue.qss"},
+        {"dark", ":/myqss/style/stylesheetDark.qss"}
     };
 
-
+    void applySavedQSS();
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -60,12 +63,27 @@ private slots:
 
     void on_addTaskBtn_clicked();
 
-    void on_deleteBtn_clicked();
+
+
+    void on_functionCode_currentIndexChanged(int index);
+
+    void on_deleteTaskBtn_clicked();
+
+    void on_cycleCheck_stateChanged(int arg1);
+
+
+    void on_cleanBtn_clicked();
+
+    void on_singleBtn_clicked();
+
+    void on_QssBtn_clicked();
+
+    void changeStyle(QString style);
 
 signals:
     modbusConnect( QMap<QString,QVariant> settings);
     modbusDisconnect();
-
+    modbusSend(int slaveAddress, int startAddress, int quantity, QString functionCode, QVector<uint16_t> values);
 protected:
     bool eventFilter(QObject *watched, QEvent *event)override;
     bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result) override;
@@ -75,9 +93,11 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent *event) override; // 双击事件
     void leaveEvent(QEvent *event)override;
     bool event(QEvent *event)override;
+    void closeEvent(QCloseEvent *event) override;
+
 private:
     void updateSerialPorts();
-
+    QVector<uint16_t> parseRegisterValues(const QString &hexString);
     Ui::MainWindow *ui;
     QVariantAnimation *m_rightMenuAnimation;
     QList<QCustomPlot *> m_plots;
@@ -85,6 +105,10 @@ private:
     QThread *modbusThread;
     ModbusWorker *modbusWork;
     int m_nBorderWidth = 5;
+    QList< ModbusData>modbuslist;
+    QStringListModel *taskListModel;
+    QTimer *modbusTimer;
+    stylemenu *m_stylemenu;
 
 };
 #endif // MAINWINDOW_H
