@@ -22,11 +22,11 @@ public slots:
     void onModbusErrorOccurred(QModbusDevice::Error error);
     void modbusSend(int slaveAddress, int startAddress, int quantity, QString functionCode, QVector<uint16_t> values);
 signals:
-    workFinished();
-    modbusConnected(QString portName);
-    modbusDisconnected();
-    receiveCorrect(QString data);
-    receiverError(QString data);
+    void    workFinished();
+    void    modbusConnected(QString portName);
+    void    modbusDisconnected();
+    void    receiveCorrect(QString data);
+    void   receiverError(QString data);
 
 private:
 

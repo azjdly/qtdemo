@@ -14,6 +14,7 @@
 #include <QVector>
 #include <QSettings>
 #include "stylemenu.h"
+#include <QMqttClient>
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -80,10 +81,22 @@ private slots:
 
     void changeStyle(QString style);
 
+    void on_mqttConnectBtn_clicked();
+
+    void onMqttConnected();
+    void onMqttDisconnected();
+    void onSubscriptionSuccess(const QMqttTopicFilter &topic);
+    void onMessageReceived(const QByteArray &message, const QMqttTopicName &topic);
+    void on_mqttSubBtn_clicked();
+
+    void on_deleteSubButton_clicked();
+
+    void on_mqttPubBtn_clicked();
+
 signals:
-    modbusConnect( QMap<QString,QVariant> settings);
-    modbusDisconnect();
-    modbusSend(int slaveAddress, int startAddress, int quantity, QString functionCode, QVector<uint16_t> values);
+void     modbusConnect( QMap<QString,QVariant> settings);
+void     modbusDisconnect();
+void     modbusSend(int slaveAddress, int startAddress, int quantity, QString functionCode, QVector<uint16_t> values);
 protected:
     bool eventFilter(QObject *watched, QEvent *event)override;
     bool nativeEvent(const QByteArray &eventType, void *message, qintptr *result) override;
@@ -109,6 +122,9 @@ private:
     QStringListModel *taskListModel;
     QTimer *modbusTimer;
     stylemenu *m_stylemenu;
+    QMqttClient * m_mqttclient=nullptr;
+    QMap<QString, QMqttSubscription*> m_subscriptions;
+
 
 };
 #endif // MAINWINDOW_H

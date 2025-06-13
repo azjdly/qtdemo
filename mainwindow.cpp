@@ -134,6 +134,12 @@ MainWindow::MainWindow(QWidget *parent)
     taskListModel = new QStringListModel(this);
     ui->taskList->setModel(taskListModel);
 
+    m_mqttclient = new QMqttClient(this);
+    connect(m_mqttclient, &QMqttClient::connected, this, &MainWindow::onMqttConnected);
+    connect(m_mqttclient, &QMqttClient::disconnected, this, &MainWindow::onMqttDisconnected);
+    connect(m_mqttclient, &QMqttClient::messageReceived, this, &MainWindow::onMessageReceived);
+
+
 
     qBtnGroup();
     timeShow();
@@ -879,4 +885,185 @@ void MainWindow::changeStyle(QString style)
         settings.setValue("qssConfig", style);
     }
 }
+
+
+void MainWindow::on_mqttConnectBtn_clicked()
+{
+    if (m_mqttclient->state() == QMqttClient::Connected)
+    {
+        m_mqttclient->disconnectFromHost(); // 若已连接，则断开连接
+    }
+    else
+    {
+        m_mqttclient->setHostname(ui->mqttHostEdit->text());
+        m_mqttclient->setPort(static_cast<quint16>(ui->mqttPortSpinbox->value()));
+
+        // 直接从 UI 控件获取客户端 ID、用户名和密码
+        m_mqttclient->setClientId(ui->clientIdEdit->text());
+        m_mqttclient->setUsername(ui->usernameEdit->text());
+        m_mqttclient->setPassword(ui->passwordEdit->text());
+        m_mqttclient->connectToHost(); // 发起连接
+    }
+}
+
+
+
+void MainWindow::onMqttConnected()
+{
+    qDebug() << "MQTT 连接成功！";
+    ui->mqttConnectBtn->setText("断开连接"); // 修改按钮文本
+
+}
+
+
+
+void MainWindow::onMqttDisconnected()
+{
+    qDebug() << "MQTT 连接已断开！";
+    ui->mqttConnectBtn->setText("连接"); // 修改按钮文本
+
+    // 清空订阅列表控件
+    ui->myTopicsCom->clear();
+    m_subscriptions.clear();
+}
+
+
+
+void MainWindow::onSubscriptionSuccess(const QMqttTopicFilter &topic)
+{
+    qDebug() << "成功订阅：" << topic.filter();
+
+    // 假设你的 UI 里有一个 ComboBox 用于显示订阅的主题
+    ui->myTopicsCom->addItem(topic.filter());
+}
+
+void MainWindow::onMessageReceived(const QByteArray &message, const QMqttTopicName &topic)
+{
+    // 获取当前时间
+    QString timestamp = QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss");
+
+    // 组合消息格式："[时间] 主题: 消息"
+    QString formattedMessage = QString("[%1] %2: %3").arg(timestamp, topic.name(), QString(message));
+
+    // 在 UI 控件中添加消息
+    ui->mqttOutEdit->append(formattedMessage);
+}
+
+
+
+void MainWindow::on_mqttSubBtn_clicked() {
+    QString topic = ui->mqttTopicEdit->text().trimmed();
+
+    // 1. 判断是否为空
+    if (topic.isEmpty()) {
+        return;
+    }
+
+    // 2. 判断是否已连接
+    if (m_mqttclient->state() != QMqttClient::Connected) {
+        return;
+    }
+
+    // 3. 检查是否已订阅
+    if (m_subscriptions.contains(topic)) {
+        qDebug() << "已订阅该主题：" << topic;
+        return;
+    }
+
+    // 4. 执行订阅
+    QMqttSubscription *subscription = m_mqttclient->subscribe(topic);
+    if (!subscription) {
+        qDebug() << "订阅失败：" << topic;
+        return;
+    }
+
+    // 存储订阅对象
+    m_subscriptions[topic] = subscription;
+
+    // 监听订阅状态变化
+    connect(subscription, &QMqttSubscription::stateChanged, this, [this, subscription, topic]() {
+        if (subscription->state() == QMqttSubscription::Subscribed) {
+            qDebug() << "订阅成功：" << topic;
+            ui->myTopicsCom->addItem(topic); // 添加到 ComboBox
+        } else {
+            qDebug() << "订阅失败：" << topic;
+        }
+    });
+}
+
+
+
+void MainWindow::on_deleteSubButton_clicked() {
+    QString topic = ui->myTopicsCom->currentText().trimmed();
+
+    // 1. 判断是否为空
+    if (topic.isEmpty()) {
+        return;
+    }
+
+    // 2. 判断是否已连接
+    if (m_mqttclient->state() != QMqttClient::Connected) {
+        return;
+    }
+
+    // 3. 获取订阅对象
+    if (!m_subscriptions.contains(topic)) {
+        qDebug() << "未找到订阅：" << topic;
+
+        int index = ui->myTopicsCom->findText(topic);
+        if (index != -1) {
+            ui->myTopicsCom->removeItem(index); // 从 ComboBox 移除
+        }
+        return;
+    }
+
+    QMqttSubscription *subscription = m_subscriptions[topic];
+
+    // 4. 取消订阅
+    subscription->unsubscribe();
+
+    // 监听取消订阅的状态变化
+    connect(subscription, &QMqttSubscription::stateChanged, this, [this, subscription, topic]() {
+        if (subscription->state() == QMqttSubscription::Unsubscribed) {
+            qDebug() << "取消订阅成功：" << topic;
+            int index = ui->myTopicsCom->findText(topic);
+            if (index != -1) {
+                ui->myTopicsCom->removeItem(index); // 从 ComboBox 移除
+            }
+            m_subscriptions.remove(topic); // 移除存储的订阅
+        } else {
+            qDebug() << "取消订阅失败：" << topic;
+        }
+    });
+}
+
+void MainWindow::on_mqttPubBtn_clicked()
+{
+    QString topic = ui->publishTopicEdit->text().trimmed(); // 获取发布主题
+    QString message = ui->mqttMessageEdit->text().trimmed(); // 获取发布消息
+
+    // 1. 判断主题是否为空
+    if (topic.isEmpty())
+    {
+        return;
+    }
+
+    // 2. 判断消息是否为空
+    if (message.isEmpty())
+    {
+        return;
+    }
+
+    // 3. 判断 MQTT 客户端是否连接
+    if (m_mqttclient->state() != QMqttClient::Connected)
+    {
+        return;
+    }
+
+    // 4. 发布消息
+    m_mqttclient->publish(QMqttTopicName(topic), message.toUtf8());
+
+    qDebug() << "消息已发布：" << topic << " -> " << message;
+}
+
 

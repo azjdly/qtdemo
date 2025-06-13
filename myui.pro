@@ -1,8 +1,9 @@
-QT       += core gui printsupport serialport serialbus
+QT       += core gui printsupport serialport serialbus mqtt
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
+
 # Windows API 需要的库
 LIBS += -luser32 -lsetupapi -ldwmapi
 QMAKE_CXXFLAGS += -Wa,-mbig-obj

@@ -15,7 +15,7 @@ public:
     explicit stylemenu(QWidget *parent = nullptr, const QList<QString> &styles={});
     ~stylemenu();
 signals:
-    changeStyle(QString style);
+    void changeStyle(QString style);
 private slots:
     void on_pushButton_clicked();
 
