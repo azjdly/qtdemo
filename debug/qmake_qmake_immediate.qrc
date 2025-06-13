@@ -1,0 +1,5 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="/">
+<file alias="icon.rc">C:/Users/91247/Desktop/Qt project/myui/icon.rc</file>
+</qresource>
+</RCC>

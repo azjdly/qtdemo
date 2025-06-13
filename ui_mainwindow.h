@@ -1015,7 +1015,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        mainStack->setCurrentIndex(2);
+        mainStack->setCurrentIndex(0);
         databitBox->setCurrentIndex(3);
         rightStack->setCurrentIndex(0);
 

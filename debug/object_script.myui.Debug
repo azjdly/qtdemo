@@ -8,6 +8,7 @@ debug/qcustomplot.o
 debug/stylemenu.o
 debug/qrc_PictureRes.o
 debug/qrc_style.o
+debug/qrc_qmake_qmake_immediate.o
 debug/moc_carouselwidget.o
 debug/moc_mainwindow.o
 debug/moc_modbusworker.o

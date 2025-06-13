@@ -569,7 +569,7 @@
            <item row="0" column="0">
             <widget class="QStackedWidget" name="mainStack">
              <property name="currentIndex">
-              <number>2</number>
+              <number>0</number>
              </property>
              <widget class="CarouselWidget" name="startPage"/>
              <widget class="QWidget" name="plotPage">
