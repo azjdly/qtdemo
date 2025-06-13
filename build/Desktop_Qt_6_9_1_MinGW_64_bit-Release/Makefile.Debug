@@ -19,7 +19,7 @@ CXXFLAGS      = -fno-keep-inline-dllexport -Wa,-mbig-obj -g -std=gnu++1z -Wall -
 INCPATH       = -I../../../myui -I. -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -Idebug -I. -I/include -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ 
 LINKER      =        g++
 LFLAGS        =        -Wl,-subsystem,windows -mthreads
-LIBS        =        -luser32 -lsetupapi -ldwmapi C:/Qt/6.9.1/mingw_64/lib/libQt6PrintSupport.a C:/Qt/6.9.1/mingw_64/lib/libQt6Widgets.a C:/Qt/6.9.1/mingw_64/lib/libQt6Gui.a C:/Qt/6.9.1/mingw_64/lib/libQt6SerialBus.a C:/Qt/6.9.1/mingw_64/lib/libQt6SerialPort.a C:/Qt/6.9.1/mingw_64/lib/libQt6Mqtt.a C:/Qt/6.9.1/mingw_64/lib/libQt6Network.a C:/Qt/6.9.1/mingw_64/lib/libQt6Core.a -lmingw32 C:/Qt/6.9.1/mingw_64/lib/libQt6EntryPoint.a -lshell32  
+LIBS        =        -luser32 -lsetupapi -ldwmapi C:/Qt/6.9.1/mingw_64/lib/libQt6PrintSupport.a C:/Qt/6.9.1/mingw_64/lib/libQt6Widgets.a C:/Qt/6.9.1/mingw_64/lib/libQt6Gui.a C:/Qt/6.9.1/mingw_64/lib/libQt6SerialBus.a C:/Qt/6.9.1/mingw_64/lib/libQt6SerialPort.a C:/Qt/6.9.1/mingw_64/lib/libQt6Mqtt.a C:/Qt/6.9.1/mingw_64/lib/libQt6Network.a C:/Qt/6.9.1/mingw_64/lib/libQt6Core.a debug/myui_resource_res.o -lmingw32 C:/Qt/6.9.1/mingw_64/lib/libQt6EntryPoint.a -lshell32  
 QMAKE         = C:/Qt/6.9.1/mingw_64/bin/qmake.exe
 DEL_FILE      = rm -f
 CHK_DIR_EXISTS= test -d
@@ -40,7 +40,7 @@ IDC           = idc
 IDL           = midl
 ZIP           = 
 DEF_FILE      = 
-RES_FILE      = 
+RES_FILE      = debug/myui_resource_res.o
 SED           = sed
 MOVE          = mv -f
 
@@ -108,8 +108,11 @@ DESTDIR_TARGET = debug/myui.exe
 first: all
 all: Makefile.Debug  debug/myui.exe
 
-debug/myui.exe: C:/Qt/6.9.1/mingw_64/lib/libQt6PrintSupport.a C:/Qt/6.9.1/mingw_64/lib/libQt6Widgets.a C:/Qt/6.9.1/mingw_64/lib/libQt6Gui.a C:/Qt/6.9.1/mingw_64/lib/libQt6SerialBus.a C:/Qt/6.9.1/mingw_64/lib/libQt6SerialPort.a C:/Qt/6.9.1/mingw_64/lib/libQt6Mqtt.a C:/Qt/6.9.1/mingw_64/lib/libQt6Network.a C:/Qt/6.9.1/mingw_64/lib/libQt6Core.a C:/Qt/6.9.1/mingw_64/lib/libQt6EntryPoint.a ui_mainwindow.h ui_stylemenu.h $(OBJECTS) 
+debug/myui.exe: C:/Qt/6.9.1/mingw_64/lib/libQt6PrintSupport.a C:/Qt/6.9.1/mingw_64/lib/libQt6Widgets.a C:/Qt/6.9.1/mingw_64/lib/libQt6Gui.a C:/Qt/6.9.1/mingw_64/lib/libQt6SerialBus.a C:/Qt/6.9.1/mingw_64/lib/libQt6SerialPort.a C:/Qt/6.9.1/mingw_64/lib/libQt6Mqtt.a C:/Qt/6.9.1/mingw_64/lib/libQt6Network.a C:/Qt/6.9.1/mingw_64/lib/libQt6Core.a C:/Qt/6.9.1/mingw_64/lib/libQt6EntryPoint.a ui_mainwindow.h ui_stylemenu.h $(OBJECTS) debug/myui_resource_res.o
 	$(LINKER) $(LFLAGS) -o $(DESTDIR_TARGET) @debug/object_script.myui.Debug $(LIBS)
+
+debug/myui_resource_res.o: myui_resource.rc
+	windres -i myui_resource.rc -o debug/myui_resource_res.o --include-dir=. $(DEFINES)
 
 qmake: FORCE
 	@$(QMAKE) -o Makefile.Debug ../../myui.pro -spec win32-g++ CONFIG+=qtquickcompiler
@@ -121,6 +124,7 @@ dist:
 
 clean: compiler_clean 
 	-$(DEL_FILE) debug/carouselwidget.o debug/main.o debug/mainwindow.o debug/modbusworker.o debug/mygrid.o debug/myplot.o debug/qcustomplot.o debug/stylemenu.o debug/qrc_PictureRes.o debug/qrc_style.o debug/moc_carouselwidget.o debug/moc_mainwindow.o debug/moc_modbusworker.o debug/moc_mygrid.o debug/moc_myplot.o debug/moc_qcustomplot.o debug/moc_stylemenu.o
+	-$(DEL_FILE) debug/myui_resource_res.o
 
 distclean: clean 
 	-$(DEL_FILE) $(DESTDIR_TARGET)
@@ -405,7 +409,7 @@ debug/moc_carouselwidget.cpp: ../../carouselwidget.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QVariantAnimation \
 		debug/moc_predefs.h \
 		C:/Qt/6.9.1/mingw_64/bin/moc.exe
-	'C:\Qt\6.9.1\mingw_64\bin\moc.exe' $(DEFINES) --include 'C:/Users/91247/Desktop/Qt project/myui/build/Desktop_Qt_6_9_1_MinGW_64_bit-Release/debug/moc_predefs.h' -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -I'C:/Users/91247/Desktop/Qt project/myui' -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ../../carouselwidget.h -o debug/moc_carouselwidget.cpp
+	'C:\Qt\6.9.1\mingw_64\bin\moc.exe' $(DEFINES) --include C:/Users/91247/Desktop/Qtproject/myui/build/Desktop_Qt_6_9_1_MinGW_64_bit-Release/debug/moc_predefs.h -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -IC:/Users/91247/Desktop/Qtproject/myui -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ../../carouselwidget.h -o debug/moc_carouselwidget.cpp
 
 debug/moc_mainwindow.cpp: ../../mainwindow.h \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QMainWindow \
@@ -1012,9 +1016,40 @@ debug/moc_mainwindow.cpp: ../../mainwindow.h \
 		C:/Qt/6.9.1/mingw_64/include/QtSerialBus/qmodbusreply.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QSettings \
 		../../stylemenu.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/QMqttClient \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttclient.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttglobal.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qtmqttexports.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttauthenticationproperties.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqtttype.h \
+		C:/Users/91247/Desktop/qtmqtt-6.9.1/src/mqtt/qmqtttype.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QPair \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QSharedDataPointer \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttconnectionproperties.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttpublishproperties.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttsubscription.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttmessage.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqtttopicname.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QExplicitlySharedDataPointer \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqtttopicfilter.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttsubscriptionproperties.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QIODevice \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/QTcpSocket \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qtcpsocket.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qtnetworkglobal.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qtnetwork-config.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qtnetworkexports.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qabstractsocket.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qhostaddress.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/QSslConfiguration \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qsslconfiguration.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qsslsocket.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qsslerror.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qsslcertificate.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qssl.h \
 		debug/moc_predefs.h \
 		C:/Qt/6.9.1/mingw_64/bin/moc.exe
-	'C:\Qt\6.9.1\mingw_64\bin\moc.exe' $(DEFINES) --include 'C:/Users/91247/Desktop/Qt project/myui/build/Desktop_Qt_6_9_1_MinGW_64_bit-Release/debug/moc_predefs.h' -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -I'C:/Users/91247/Desktop/Qt project/myui' -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ../../mainwindow.h -o debug/moc_mainwindow.cpp
+	'C:\Qt\6.9.1\mingw_64\bin\moc.exe' $(DEFINES) --include C:/Users/91247/Desktop/Qtproject/myui/build/Desktop_Qt_6_9_1_MinGW_64_bit-Release/debug/moc_predefs.h -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -IC:/Users/91247/Desktop/Qtproject/myui -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ../../mainwindow.h -o debug/moc_mainwindow.cpp
 
 debug/moc_modbusworker.cpp: ../../modbusworker.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QObject \
@@ -1165,7 +1200,7 @@ debug/moc_modbusworker.cpp: ../../modbusworker.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QString \
 		debug/moc_predefs.h \
 		C:/Qt/6.9.1/mingw_64/bin/moc.exe
-	'C:\Qt\6.9.1\mingw_64\bin\moc.exe' $(DEFINES) --include 'C:/Users/91247/Desktop/Qt project/myui/build/Desktop_Qt_6_9_1_MinGW_64_bit-Release/debug/moc_predefs.h' -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -I'C:/Users/91247/Desktop/Qt project/myui' -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ../../modbusworker.h -o debug/moc_modbusworker.cpp
+	'C:\Qt\6.9.1\mingw_64\bin\moc.exe' $(DEFINES) --include C:/Users/91247/Desktop/Qtproject/myui/build/Desktop_Qt_6_9_1_MinGW_64_bit-Release/debug/moc_predefs.h -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -IC:/Users/91247/Desktop/Qtproject/myui -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ../../modbusworker.h -o debug/moc_modbusworker.cpp
 
 debug/moc_mygrid.cpp: ../../mygrid.h \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QWidget \
@@ -1757,7 +1792,7 @@ debug/moc_mygrid.cpp: ../../mygrid.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QTimeZone \
 		debug/moc_predefs.h \
 		C:/Qt/6.9.1/mingw_64/bin/moc.exe
-	'C:\Qt\6.9.1\mingw_64\bin\moc.exe' $(DEFINES) --include 'C:/Users/91247/Desktop/Qt project/myui/build/Desktop_Qt_6_9_1_MinGW_64_bit-Release/debug/moc_predefs.h' -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -I'C:/Users/91247/Desktop/Qt project/myui' -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ../../mygrid.h -o debug/moc_mygrid.cpp
+	'C:\Qt\6.9.1\mingw_64\bin\moc.exe' $(DEFINES) --include C:/Users/91247/Desktop/Qtproject/myui/build/Desktop_Qt_6_9_1_MinGW_64_bit-Release/debug/moc_predefs.h -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -IC:/Users/91247/Desktop/Qtproject/myui -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ../../mygrid.h -o debug/moc_mygrid.cpp
 
 debug/moc_myplot.cpp: ../../myplot.h \
 		../../qcustomplot.h \
@@ -2347,7 +2382,7 @@ debug/moc_myplot.cpp: ../../myplot.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QTimeZone \
 		debug/moc_predefs.h \
 		C:/Qt/6.9.1/mingw_64/bin/moc.exe
-	'C:\Qt\6.9.1\mingw_64\bin\moc.exe' $(DEFINES) --include 'C:/Users/91247/Desktop/Qt project/myui/build/Desktop_Qt_6_9_1_MinGW_64_bit-Release/debug/moc_predefs.h' -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -I'C:/Users/91247/Desktop/Qt project/myui' -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ../../myplot.h -o debug/moc_myplot.cpp
+	'C:\Qt\6.9.1\mingw_64\bin\moc.exe' $(DEFINES) --include C:/Users/91247/Desktop/Qtproject/myui/build/Desktop_Qt_6_9_1_MinGW_64_bit-Release/debug/moc_predefs.h -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -IC:/Users/91247/Desktop/Qtproject/myui -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ../../myplot.h -o debug/moc_myplot.cpp
 
 debug/moc_qcustomplot.cpp: ../../qcustomplot.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/qglobal.h \
@@ -2936,7 +2971,7 @@ debug/moc_qcustomplot.cpp: ../../qcustomplot.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QTimeZone \
 		debug/moc_predefs.h \
 		C:/Qt/6.9.1/mingw_64/bin/moc.exe
-	'C:\Qt\6.9.1\mingw_64\bin\moc.exe' $(DEFINES) --include 'C:/Users/91247/Desktop/Qt project/myui/build/Desktop_Qt_6_9_1_MinGW_64_bit-Release/debug/moc_predefs.h' -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -I'C:/Users/91247/Desktop/Qt project/myui' -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ../../qcustomplot.h -o debug/moc_qcustomplot.cpp
+	'C:\Qt\6.9.1\mingw_64\bin\moc.exe' $(DEFINES) --include C:/Users/91247/Desktop/Qtproject/myui/build/Desktop_Qt_6_9_1_MinGW_64_bit-Release/debug/moc_predefs.h -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -IC:/Users/91247/Desktop/Qtproject/myui -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ../../qcustomplot.h -o debug/moc_qcustomplot.cpp
 
 debug/moc_stylemenu.cpp: ../../stylemenu.h \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QWidget \
@@ -3138,7 +3173,7 @@ debug/moc_stylemenu.cpp: ../../stylemenu.h \
 		C:/Qt/6.9.1/mingw_64/include/QtGui/qguiapplication_platform.h \
 		debug/moc_predefs.h \
 		C:/Qt/6.9.1/mingw_64/bin/moc.exe
-	'C:\Qt\6.9.1\mingw_64\bin\moc.exe' $(DEFINES) --include 'C:/Users/91247/Desktop/Qt project/myui/build/Desktop_Qt_6_9_1_MinGW_64_bit-Release/debug/moc_predefs.h' -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -I'C:/Users/91247/Desktop/Qt project/myui' -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ../../stylemenu.h -o debug/moc_stylemenu.cpp
+	'C:\Qt\6.9.1\mingw_64\bin\moc.exe' $(DEFINES) --include C:/Users/91247/Desktop/Qtproject/myui/build/Desktop_Qt_6_9_1_MinGW_64_bit-Release/debug/moc_predefs.h -IC:/Qt/6.9.1/mingw_64/mkspecs/win32-g++ -IC:/Users/91247/Desktop/Qtproject/myui -IC:/Qt/6.9.1/mingw_64/include -IC:/Qt/6.9.1/mingw_64/include/QtPrintSupport -IC:/Qt/6.9.1/mingw_64/include/QtWidgets -IC:/Qt/6.9.1/mingw_64/include/QtGui -IC:/Qt/6.9.1/mingw_64/include/QtSerialBus -IC:/Qt/6.9.1/mingw_64/include/QtSerialPort -IC:/Qt/6.9.1/mingw_64/include/QtMqtt -IC:/Qt/6.9.1/mingw_64/include/QtNetwork -IC:/Qt/6.9.1/mingw_64/include/QtCore -I. -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++ -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/x86_64-w64-mingw32 -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include/c++/backward -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include -IE:/QT/Tools/mingw1120_64/lib/gcc/x86_64-w64-mingw32/11.2.0/include-fixed -IE:/QT/Tools/mingw1120_64/x86_64-w64-mingw32/include ../../stylemenu.h -o debug/moc_stylemenu.cpp
 
 compiler_moc_objc_header_make_all:
 compiler_moc_objc_header_clean:
@@ -4786,6 +4821,37 @@ debug/main.o: ../../main.cpp ../../mainwindow.h \
 		C:/Qt/6.9.1/mingw_64/include/QtSerialBus/qmodbusreply.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QSettings \
 		../../stylemenu.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/QMqttClient \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttclient.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttglobal.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qtmqttexports.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttauthenticationproperties.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqtttype.h \
+		C:/Users/91247/Desktop/qtmqtt-6.9.1/src/mqtt/qmqtttype.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QPair \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QSharedDataPointer \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttconnectionproperties.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttpublishproperties.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttsubscription.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttmessage.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqtttopicname.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QExplicitlySharedDataPointer \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqtttopicfilter.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttsubscriptionproperties.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QIODevice \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/QTcpSocket \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qtcpsocket.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qtnetworkglobal.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qtnetwork-config.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qtnetworkexports.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qabstractsocket.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qhostaddress.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/QSslConfiguration \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qsslconfiguration.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qsslsocket.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qsslerror.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qsslcertificate.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qssl.h \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QApplication \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QFile
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o debug/main.o ../../main.cpp
@@ -5395,6 +5461,37 @@ debug/mainwindow.o: ../../mainwindow.cpp ../../mainwindow.h \
 		C:/Qt/6.9.1/mingw_64/include/QtSerialBus/qmodbusreply.h \
 		C:/Qt/6.9.1/mingw_64/include/QtCore/QSettings \
 		../../stylemenu.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/QMqttClient \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttclient.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttglobal.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qtmqttexports.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttauthenticationproperties.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqtttype.h \
+		C:/Users/91247/Desktop/qtmqtt-6.9.1/src/mqtt/qmqtttype.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QPair \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QSharedDataPointer \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttconnectionproperties.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttpublishproperties.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttsubscription.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttmessage.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqtttopicname.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QExplicitlySharedDataPointer \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqtttopicfilter.h \
+		C:/Qt/6.9.1/mingw_64/include/QtMqtt/qmqttsubscriptionproperties.h \
+		C:/Qt/6.9.1/mingw_64/include/QtCore/QIODevice \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/QTcpSocket \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qtcpsocket.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qtnetworkglobal.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qtnetwork-config.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qtnetworkexports.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qabstractsocket.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qhostaddress.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/QSslConfiguration \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qsslconfiguration.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qsslsocket.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qsslerror.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qsslcertificate.h \
+		C:/Qt/6.9.1/mingw_64/include/QtNetwork/qssl.h \
 		../../ui_mainwindow.h \
 		C:/Qt/6.9.1/mingw_64/include/QtGui/QIcon \
 		C:/Qt/6.9.1/mingw_64/include/QtWidgets/QApplication \

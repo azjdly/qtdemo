@@ -84,24 +84,33 @@ public:
     QWidget *widget_10;
     QFormLayout *formLayout_2;
     QLabel *label_3;
-    QLineEdit *lineEdit;
+    QLineEdit *mqttHostEdit;
     QLabel *label_13;
-    QSpinBox *spinBox_2;
-    QLabel *label_14;
-    QLineEdit *lineEdit_2;
+    QSpinBox *mqttPortSpinbox;
+    QLabel *label_17;
+    QComboBox *myTopicsCom;
     QLabel *label_15;
-    QLineEdit *lineEdit_4;
-    QWidget *widget_11;
-    QVBoxLayout *verticalLayout_7;
-    QPushButton *pushButton;
-    QPushButton *pushButton_2;
-    QPushButton *pushButton_3;
-    QPushButton *pushButton_4;
-    QPushButton *pushButton_5;
+    QLineEdit *mqttMessageEdit;
+    QLabel *label_18;
+    QLineEdit *clientIdEdit;
+    QLabel *label_19;
+    QLabel *label_20;
+    QLineEdit *usernameEdit;
+    QLineEdit *passwordEdit;
+    QLabel *label_14;
+    QLineEdit *mqttTopicEdit;
+    QLineEdit *publishTopicEdit;
+    QLabel *label_21;
     QWidget *widget_12;
     QVBoxLayout *verticalLayout_9;
     QLabel *label_16;
-    QTextEdit *textEdit;
+    QTextEdit *mqttOutEdit;
+    QWidget *widget_11;
+    QVBoxLayout *verticalLayout_7;
+    QPushButton *mqttConnectBtn;
+    QPushButton *mqttSubBtn;
+    QPushButton *deleteSubButton;
+    QPushButton *mqttPubBtn;
     QWidget *comPage;
     QHBoxLayout *horizontalLayout_8;
     QWidget *widget_4;
@@ -466,75 +475,97 @@ public:
 
         formLayout_2->setWidget(0, QFormLayout::ItemRole::LabelRole, label_3);
 
-        lineEdit = new QLineEdit(widget_10);
-        lineEdit->setObjectName("lineEdit");
+        mqttHostEdit = new QLineEdit(widget_10);
+        mqttHostEdit->setObjectName("mqttHostEdit");
 
-        formLayout_2->setWidget(0, QFormLayout::ItemRole::FieldRole, lineEdit);
+        formLayout_2->setWidget(0, QFormLayout::ItemRole::FieldRole, mqttHostEdit);
 
         label_13 = new QLabel(widget_10);
         label_13->setObjectName("label_13");
 
         formLayout_2->setWidget(1, QFormLayout::ItemRole::LabelRole, label_13);
 
-        spinBox_2 = new QSpinBox(widget_10);
-        spinBox_2->setObjectName("spinBox_2");
+        mqttPortSpinbox = new QSpinBox(widget_10);
+        mqttPortSpinbox->setObjectName("mqttPortSpinbox");
+        mqttPortSpinbox->setMinimum(1);
+        mqttPortSpinbox->setMaximum(65535);
+        mqttPortSpinbox->setStepType(QAbstractSpinBox::StepType::DefaultStepType);
+        mqttPortSpinbox->setValue(1883);
 
-        formLayout_2->setWidget(1, QFormLayout::ItemRole::FieldRole, spinBox_2);
+        formLayout_2->setWidget(1, QFormLayout::ItemRole::FieldRole, mqttPortSpinbox);
 
-        label_14 = new QLabel(widget_10);
-        label_14->setObjectName("label_14");
+        label_17 = new QLabel(widget_10);
+        label_17->setObjectName("label_17");
 
-        formLayout_2->setWidget(2, QFormLayout::ItemRole::LabelRole, label_14);
+        formLayout_2->setWidget(7, QFormLayout::ItemRole::LabelRole, label_17);
 
-        lineEdit_2 = new QLineEdit(widget_10);
-        lineEdit_2->setObjectName("lineEdit_2");
+        myTopicsCom = new QComboBox(widget_10);
+        myTopicsCom->setObjectName("myTopicsCom");
 
-        formLayout_2->setWidget(2, QFormLayout::ItemRole::FieldRole, lineEdit_2);
+        formLayout_2->setWidget(7, QFormLayout::ItemRole::FieldRole, myTopicsCom);
 
         label_15 = new QLabel(widget_10);
         label_15->setObjectName("label_15");
 
-        formLayout_2->setWidget(3, QFormLayout::ItemRole::LabelRole, label_15);
+        formLayout_2->setWidget(9, QFormLayout::ItemRole::LabelRole, label_15);
 
-        lineEdit_4 = new QLineEdit(widget_10);
-        lineEdit_4->setObjectName("lineEdit_4");
+        mqttMessageEdit = new QLineEdit(widget_10);
+        mqttMessageEdit->setObjectName("mqttMessageEdit");
 
-        formLayout_2->setWidget(3, QFormLayout::ItemRole::FieldRole, lineEdit_4);
+        formLayout_2->setWidget(9, QFormLayout::ItemRole::FieldRole, mqttMessageEdit);
+
+        label_18 = new QLabel(widget_10);
+        label_18->setObjectName("label_18");
+
+        formLayout_2->setWidget(3, QFormLayout::ItemRole::LabelRole, label_18);
+
+        clientIdEdit = new QLineEdit(widget_10);
+        clientIdEdit->setObjectName("clientIdEdit");
+
+        formLayout_2->setWidget(3, QFormLayout::ItemRole::FieldRole, clientIdEdit);
+
+        label_19 = new QLabel(widget_10);
+        label_19->setObjectName("label_19");
+
+        formLayout_2->setWidget(4, QFormLayout::ItemRole::LabelRole, label_19);
+
+        label_20 = new QLabel(widget_10);
+        label_20->setObjectName("label_20");
+
+        formLayout_2->setWidget(5, QFormLayout::ItemRole::LabelRole, label_20);
+
+        usernameEdit = new QLineEdit(widget_10);
+        usernameEdit->setObjectName("usernameEdit");
+
+        formLayout_2->setWidget(4, QFormLayout::ItemRole::FieldRole, usernameEdit);
+
+        passwordEdit = new QLineEdit(widget_10);
+        passwordEdit->setObjectName("passwordEdit");
+
+        formLayout_2->setWidget(5, QFormLayout::ItemRole::FieldRole, passwordEdit);
+
+        label_14 = new QLabel(widget_10);
+        label_14->setObjectName("label_14");
+
+        formLayout_2->setWidget(6, QFormLayout::ItemRole::LabelRole, label_14);
+
+        mqttTopicEdit = new QLineEdit(widget_10);
+        mqttTopicEdit->setObjectName("mqttTopicEdit");
+
+        formLayout_2->setWidget(6, QFormLayout::ItemRole::FieldRole, mqttTopicEdit);
+
+        publishTopicEdit = new QLineEdit(widget_10);
+        publishTopicEdit->setObjectName("publishTopicEdit");
+
+        formLayout_2->setWidget(8, QFormLayout::ItemRole::FieldRole, publishTopicEdit);
+
+        label_21 = new QLabel(widget_10);
+        label_21->setObjectName("label_21");
+
+        formLayout_2->setWidget(8, QFormLayout::ItemRole::LabelRole, label_21);
 
 
         gridLayout_5->addWidget(widget_10, 0, 0, 1, 1);
-
-        widget_11 = new QWidget(networkPage);
-        widget_11->setObjectName("widget_11");
-        verticalLayout_7 = new QVBoxLayout(widget_11);
-        verticalLayout_7->setObjectName("verticalLayout_7");
-        pushButton = new QPushButton(widget_11);
-        pushButton->setObjectName("pushButton");
-
-        verticalLayout_7->addWidget(pushButton);
-
-        pushButton_2 = new QPushButton(widget_11);
-        pushButton_2->setObjectName("pushButton_2");
-
-        verticalLayout_7->addWidget(pushButton_2);
-
-        pushButton_3 = new QPushButton(widget_11);
-        pushButton_3->setObjectName("pushButton_3");
-
-        verticalLayout_7->addWidget(pushButton_3);
-
-        pushButton_4 = new QPushButton(widget_11);
-        pushButton_4->setObjectName("pushButton_4");
-
-        verticalLayout_7->addWidget(pushButton_4);
-
-        pushButton_5 = new QPushButton(widget_11);
-        pushButton_5->setObjectName("pushButton_5");
-
-        verticalLayout_7->addWidget(pushButton_5);
-
-
-        gridLayout_5->addWidget(widget_11, 0, 1, 1, 1);
 
         widget_12 = new QWidget(networkPage);
         widget_12->setObjectName("widget_12");
@@ -545,13 +576,40 @@ public:
 
         verticalLayout_9->addWidget(label_16);
 
-        textEdit = new QTextEdit(widget_12);
-        textEdit->setObjectName("textEdit");
+        mqttOutEdit = new QTextEdit(widget_12);
+        mqttOutEdit->setObjectName("mqttOutEdit");
 
-        verticalLayout_9->addWidget(textEdit);
+        verticalLayout_9->addWidget(mqttOutEdit);
 
 
         gridLayout_5->addWidget(widget_12, 1, 0, 1, 2);
+
+        widget_11 = new QWidget(networkPage);
+        widget_11->setObjectName("widget_11");
+        verticalLayout_7 = new QVBoxLayout(widget_11);
+        verticalLayout_7->setObjectName("verticalLayout_7");
+        mqttConnectBtn = new QPushButton(widget_11);
+        mqttConnectBtn->setObjectName("mqttConnectBtn");
+
+        verticalLayout_7->addWidget(mqttConnectBtn);
+
+        mqttSubBtn = new QPushButton(widget_11);
+        mqttSubBtn->setObjectName("mqttSubBtn");
+
+        verticalLayout_7->addWidget(mqttSubBtn);
+
+        deleteSubButton = new QPushButton(widget_11);
+        deleteSubButton->setObjectName("deleteSubButton");
+
+        verticalLayout_7->addWidget(deleteSubButton);
+
+        mqttPubBtn = new QPushButton(widget_11);
+        mqttPubBtn->setObjectName("mqttPubBtn");
+
+        verticalLayout_7->addWidget(mqttPubBtn);
+
+
+        gridLayout_5->addWidget(widget_11, 0, 1, 1, 1);
 
         mainStack->addWidget(networkPage);
         comPage = new QWidget();
@@ -957,7 +1015,7 @@ public:
 
         retranslateUi(MainWindow);
 
-        mainStack->setCurrentIndex(2);
+        mainStack->setCurrentIndex(0);
         databitBox->setCurrentIndex(3);
         rightStack->setCurrentIndex(0);
 
@@ -981,15 +1039,20 @@ public:
         toolBtn->setText(QCoreApplication::translate("MainWindow", "\345\267\245\345\205\267", nullptr));
         idBtn->setText(QCoreApplication::translate("MainWindow", "\350\264\246\346\210\267", nullptr));
         label_3->setText(QCoreApplication::translate("MainWindow", "Host:", nullptr));
+        mqttHostEdit->setText(QCoreApplication::translate("MainWindow", "127.0.0.1", nullptr));
         label_13->setText(QCoreApplication::translate("MainWindow", "Port:", nullptr));
-        label_14->setText(QCoreApplication::translate("MainWindow", "Topic:", nullptr));
+        label_17->setText(QCoreApplication::translate("MainWindow", "Mytopics:", nullptr));
         label_15->setText(QCoreApplication::translate("MainWindow", "Message:", nullptr));
-        pushButton->setText(QCoreApplication::translate("MainWindow", "\350\277\236\346\216\245", nullptr));
-        pushButton_2->setText(QCoreApplication::translate("MainWindow", "\350\256\242\351\230\205", nullptr));
-        pushButton_3->setText(QCoreApplication::translate("MainWindow", "\345\217\221\345\270\203", nullptr));
-        pushButton_4->setText(QCoreApplication::translate("MainWindow", "PushButton", nullptr));
-        pushButton_5->setText(QCoreApplication::translate("MainWindow", "bugbtn", nullptr));
+        label_18->setText(QCoreApplication::translate("MainWindow", "Clientid:", nullptr));
+        label_19->setText(QCoreApplication::translate("MainWindow", "Username:", nullptr));
+        label_20->setText(QCoreApplication::translate("MainWindow", "Password:", nullptr));
+        label_14->setText(QCoreApplication::translate("MainWindow", "Topic:", nullptr));
+        label_21->setText(QCoreApplication::translate("MainWindow", "PublishTopic:", nullptr));
         label_16->setText(QCoreApplication::translate("MainWindow", "\350\276\223\345\207\272\344\277\241\346\201\257", nullptr));
+        mqttConnectBtn->setText(QCoreApplication::translate("MainWindow", "\350\277\236\346\216\245", nullptr));
+        mqttSubBtn->setText(QCoreApplication::translate("MainWindow", "\350\256\242\351\230\205", nullptr));
+        deleteSubButton->setText(QCoreApplication::translate("MainWindow", "\345\210\240\351\231\244\350\256\242\351\230\205", nullptr));
+        mqttPubBtn->setText(QCoreApplication::translate("MainWindow", "\345\217\221\345\270\203", nullptr));
         comStateLabel->setText(QCoreApplication::translate("MainWindow", "\346\234\252\350\277\236\346\216\245", nullptr));
         comportLabel->setText(QCoreApplication::translate("MainWindow", "\347\253\257\345\217\243", nullptr));
         baudrateLabel->setText(QCoreApplication::translate("MainWindow", "\346\263\242\347\211\271\347\216\207", nullptr));

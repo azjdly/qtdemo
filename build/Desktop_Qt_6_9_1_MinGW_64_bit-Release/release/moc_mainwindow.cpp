@@ -71,7 +71,19 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         "on_singleBtn_clicked",
         "on_QssBtn_clicked",
         "changeStyle",
-        "style"
+        "style",
+        "on_mqttConnectBtn_clicked",
+        "onMqttConnected",
+        "onMqttDisconnected",
+        "onSubscriptionSuccess",
+        "QMqttTopicFilter",
+        "topic",
+        "onMessageReceived",
+        "message",
+        "QMqttTopicName",
+        "on_mqttSubBtn_clicked",
+        "on_deleteSubButton_clicked",
+        "on_mqttPubBtn_clicked"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -122,6 +134,26 @@ template <> constexpr inline auto MainWindow::qt_create_metaobjectdata<qt_meta_t
         QtMocHelpers::SlotData<void(QString)>(29, 2, QMC::AccessPrivate, QMetaType::Void, {{
             { QMetaType::QString, 30 },
         }}),
+        // Slot 'on_mqttConnectBtn_clicked'
+        QtMocHelpers::SlotData<void()>(31, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onMqttConnected'
+        QtMocHelpers::SlotData<void()>(32, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onMqttDisconnected'
+        QtMocHelpers::SlotData<void()>(33, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onSubscriptionSuccess'
+        QtMocHelpers::SlotData<void(const QMqttTopicFilter &)>(34, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { 0x80000000 | 35, 36 },
+        }}),
+        // Slot 'onMessageReceived'
+        QtMocHelpers::SlotData<void(const QByteArray &, const QMqttTopicName &)>(37, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QByteArray, 38 }, { 0x80000000 | 39, 36 },
+        }}),
+        // Slot 'on_mqttSubBtn_clicked'
+        QtMocHelpers::SlotData<void()>(40, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'on_deleteSubButton_clicked'
+        QtMocHelpers::SlotData<void()>(41, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'on_mqttPubBtn_clicked'
+        QtMocHelpers::SlotData<void()>(42, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -163,7 +195,34 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 15: _t->on_singleBtn_clicked(); break;
         case 16: _t->on_QssBtn_clicked(); break;
         case 17: _t->changeStyle((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 18: _t->on_mqttConnectBtn_clicked(); break;
+        case 19: _t->onMqttConnected(); break;
+        case 20: _t->onMqttDisconnected(); break;
+        case 21: _t->onSubscriptionSuccess((*reinterpret_cast< std::add_pointer_t<QMqttTopicFilter>>(_a[1]))); break;
+        case 22: _t->onMessageReceived((*reinterpret_cast< std::add_pointer_t<QByteArray>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QMqttTopicName>>(_a[2]))); break;
+        case 23: _t->on_mqttSubBtn_clicked(); break;
+        case 24: _t->on_deleteSubButton_clicked(); break;
+        case 25: _t->on_mqttPubBtn_clicked(); break;
         default: ;
+        }
+    }
+    if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        switch (_id) {
+        default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
+        case 21:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
+            case 0:
+                *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType::fromType< QMqttTopicFilter >(); break;
+            }
+            break;
+        case 22:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType(); break;
+            case 1:
+                *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType::fromType< QMqttTopicName >(); break;
+            }
+            break;
         }
     }
     if (_c == QMetaObject::IndexOfMethod) {
@@ -195,14 +254,14 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 18)
+        if (_id < 26)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 18;
+        _id -= 26;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 18)
-            *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 18;
+        if (_id < 26)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 26;
     }
     return _id;
 }

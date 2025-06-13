@@ -33,7 +33,7 @@ IDC           = idc
 IDL           = midl
 ZIP           = 
 DEF_FILE      = 
-RES_FILE      = 
+RES_FILE      = myui_resource_res.o
 SED           = sed
 MOVE          = mv -f
 SUBTARGETS    =  \
@@ -336,9 +336,7 @@ Makefile: myui.pro C:/Qt/6.9.1/mingw_64/mkspecs/win32-g++/qmake.conf C:/Qt/6.9.1
 		C:/Qt/6.9.1/mingw_64/lib/Qt6EntryPoint.prl \
 		C:/Qt/6.9.1/mingw_64/mkspecs/features/build_pass.prf \
 		PictureRes.qrc \
-		style.qrc \
-		release/qmake_qmake_immediate.qrc \
-		debug/qmake_qmake_immediate.qrc
+		style.qrc
 	$(QMAKE) -o Makefile myui.pro -spec win32-g++ CONFIG+=qtquickcompiler
 C:/Qt/6.9.1/mingw_64/mkspecs/features/spec_pre.prf:
 C:/Qt/6.9.1/mingw_64/mkspecs/features/device_config.prf:
@@ -607,8 +605,6 @@ C:/Qt/6.9.1/mingw_64/lib/Qt6EntryPoint.prl:
 C:/Qt/6.9.1/mingw_64/mkspecs/features/build_pass.prf:
 PictureRes.qrc:
 style.qrc:
-release/qmake_qmake_immediate.qrc:
-debug/qmake_qmake_immediate.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile myui.pro -spec win32-g++ CONFIG+=qtquickcompiler
 

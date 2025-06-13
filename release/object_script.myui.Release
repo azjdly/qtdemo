@@ -8,7 +8,6 @@ release/qcustomplot.o
 release/stylemenu.o
 release/qrc_PictureRes.o
 release/qrc_style.o
-release/qrc_qmake_qmake_immediate.o
 release/moc_carouselwidget.o
 release/moc_mainwindow.o
 release/moc_modbusworker.o
